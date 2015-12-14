@@ -1,0 +1,28 @@
+
+package pborm;
+
+
+enum OrmMsgOP {
+    ORM_COMMAND= 0;
+    ORM_INSERT = 1;
+    ORM_DELETE = 2;
+    ORM_SELECT = 3;
+    ORM_UPDATE = 4;
+    ORM_COUNT  = 5;
+}
+
+message OrmMsgSelect {
+    optional    string      where = 1;
+    optional    int32       offset = 2;
+    optional    int32       limit = 3;
+    optional    string      fields = 4;
+    optional    int32       order = 5; //1, asc,2:desc
+}
+
+message OrmMsg {
+    required    string          msg_full_type_name = 1;
+    required    bytes           msg_data = 2;
+    required    OrmMsgOP        op  = 3;
+    optional    OrmMsgSelect    select = 4;
+    optional    bytes           cb = 5;
+}
