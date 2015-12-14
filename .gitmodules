@@ -1,6 +1,0 @@
-[submodule "src/dcpots"]
-	path = src/dcpots
-	url = https://github.com/jj4jj/dcpots.git
-[submodule "src/hpbex"]
-	path = src/hpbex
-	url = https://github.com/jj4jj/hpbex.git
