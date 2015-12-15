@@ -1,0 +1,27 @@
+
+import "extensions.proto"
+package pborm;
+
+message LogConf {
+	optional	string		path  = 1[(f_length)=128,(f_desc)=""];
+	optional	string		level = 2[(f_length)=8,(f_desc)="TRACE,DEBUG,INFO,WARN,ERROR,FATAL"];
+	optional	string		file_pattern = 3[(f_length)=32,"pborm.log"];
+	optional	uint32		max_roll = 4[(f_length)=32,defaultvalue=20];
+	optional	uint32		max_log_size = 5;
+}
+
+message DBConf {
+	optional	string		ip = 1;
+	optional	uint32		port = 2;
+	optional	string		sock = 3;
+	optional	uint32		reconnect = 4;
+	optional	string		charset = 5;
+	optional	uint32		autocommit = 6;
+}
+
+message Config {
+	optional	LogConf		log = 1;
+	optional	DBConf		db = 2;
+	optional	string		proto_path = 3;
+	optional	uint32		thread_num = 4;
+}
