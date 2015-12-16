@@ -4,8 +4,10 @@
 #include "utility/util_proto.h"
 #include "base/cmdline_opt.h"
 #include "base/msg_buffer.hpp"
-#include "proto/pborm_conf.hpb.h"
 #include "mysql_gen.h"
+#include "proto/pborm.pb.h"
+#include "proto/pborm_conf.pb.h"
+#include "proto/pborm_conf.hpb.h"
 #include "pborm_msg.h"
 
 
@@ -26,7 +28,7 @@ static struct {
 } g_ctx;
 
 static int 
-response_error_msg(dcnode_t *dc, int ret, const mysqlclient_pool_t::command_t & cmd){
+response_error_msg(int ret, const mysqlclient_pool_t::command_t & cmd){
     pborm_msg_t ormmsg;
     ormmsg.set_op((OrmMsgOP)cmd.opaque);
     if (cmd.cbdata.valid_size > 0){
@@ -44,7 +46,7 @@ response_error_msg(dcnode_t *dc, int ret, const mysqlclient_pool_t::command_t & 
 
 
 static void
-orm_msg_fetch_result(void *ud, const mysqlclient_pool_t::result_t & result,
+orm_msg_fetch_result(void *, const mysqlclient_pool_t::result_t & result,
 const mysqlclient_pool_t::command_t & cmd){
     pborm_msg_t msg;
     msg.set_op((OrmMsgOP)cmd.opaque);
@@ -73,14 +75,13 @@ const mysqlclient_pool_t::command_t & cmd){
             mysqlclient_t::table_row_t tbrow;
             sqlrow.table_name = msg_desc->name().c_str();
             for (size_t i = 0; i < result.fetched_results.size(); ++i){
-                g_ctx.msgbuff.valid_size = g_ctx.msgbuff.max_size;
-                auto & row = result.fetched_results[i];
                 result.alloc_mysql_row_converted(tbrow, i);
-
                 sqlrow.fields_name = tbrow.fields_name;
                 sqlrow.num_fields = tbrow.fields_count;
                 sqlrow.row_data = tbrow.row_data;
                 sqlrow.row_lengths = tbrow.row_length;
+
+                g_ctx.msgbuff.valid_size = g_ctx.msgbuff.max_size;
                 ret = g_ctx.converter->GetMsgBufferFromSQLRow(g_ctx.msgbuff.buffer,
                     &g_ctx.msgbuff.valid_size, sqlrow, cmd.flatmode);
                 result.free_mysql_row(tbrow);
@@ -128,19 +129,21 @@ orm_msg_dispatcher(void * ud, const char * src, const msg_buffer_t & msg){
             break;
         }
         if (g_ctx.converter->CheckMsgValid(newmsg->GetDescriptor())){
-            GLOG_ERR("check msg:%s valid error :%s", orm_msg.msg_full_type_name().c_str());
+            GLOG_ERR("check msg:%s valid error !", orm_msg.msg_full_type_name().c_str());
             ret = -3;
             break;
         }
         MySQLMsgMeta msgen(g_ctx.converter);
         if (msgen.AttachMsg(newmsg)){
-            GLOG_ERR("attach msg:%s valid error :%s", orm_msg.msg_full_type_name().c_str());
+            GLOG_ERR("attach msg:%s valid error !", orm_msg.msg_full_type_name().c_str());
             ret = -4;
             break;
         }
         ///////////////////////////////////////////////////////////////////////
         bool flatmode = false;
         switch (orm_msg.op()){
+        case ORM_COMMAND:
+            break;
         case ORM_INSERT:
             ret = msgen.Insert(cmd.sql);
             break;
@@ -171,7 +174,7 @@ orm_msg_dispatcher(void * ud, const char * src, const msg_buffer_t & msg){
         g_ctx.converter->GetProtoMeta().FreeDynMessage(newmsg);
     }
     if (ret){
-        return response_error_msg(g_ctx.dc, ret, cmd);
+        return response_error_msg(ret, cmd);
     }
     return 0;
 }
@@ -186,16 +189,11 @@ main(int argc, char ** argv){
         cout << MAJOR_VERSION << "." << MINOR_VERSION << "." << PATCH_VERSION << endl;
         return 0;
     }
-    if (argc < 2){
-        cmdline.pusage();
-        return -1;
-    }
     if (cmdline.hasopt("g")){
         const pborm::Config &  conf = pborm::Config::default_instance();
         dcsutil::protobuf_saveto_xml(conf, "pborm.default.xml");
         return 0;
     }
-
     const char * confile = cmdline.getoptstr("config");
     if (access(confile, R_OK)){
         cerr << "config file :" << confile << " not exists !" << endl;
@@ -209,8 +207,8 @@ main(int argc, char ** argv){
         cerr << "read config file error !" << endl;
         return -2;
     }
-    cout << "config file " << endl;
-    cout << xmlconfig.ShortDebugString() << endl;
+    cout << "config file as follow:" << endl;
+    cout << xmlconfig.DebugString() << endl;
     pborm::Config_ST    config;
     config.convfrom(xmlconfig);
     /////////////////////////////////////////////////////////////////////////////
@@ -240,13 +238,16 @@ main(int argc, char ** argv){
     mysqlclient_pool_t::mysqlconnx_config_t  mconf;
     mconf.uname = config.db.uname.data;
     mconf.passwd = config.db.passwd.data;    
+    mconf.ip = config.db.ip.data;
+    mconf.port = config.db.port;
     if (mcp.init(mconf)){
         GLOG_ERR("mysql client create error !");
         return -1;
     }
 
-    MySQLMsgCvt	msc(config.meta_path.data, (st_mysql*)mcp.mysqlhandle());
-    ret = msc.InitMeta();
+    MySQLMsgCvt	msc(config.meta_file.data, (st_mysql*)mcp.mysqlhandle());
+    const char * paths[] = {config.meta_path.data};
+    ret = msc.InitMeta(1, paths);
     if (ret){
         cerr << "init schama error ! ret:" << ret << endl;
         return -11;

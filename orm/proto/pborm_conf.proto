@@ -26,7 +26,6 @@ message ProcessConf {
 	optional	uint32		daemon=2[default=0];
 }
 
-
 message Config {
 	optional	LogConf		log = 1;
 	optional	DBConf		db = 2;
@@ -35,4 +34,5 @@ message Config {
 	optional	string		meta_path = 100[(f_length)="64",default="./proto"];
 	optional	uint32		thread_num = 101[default=4];
 	optional	string		listen = 102[(f_length)="64",default="tcp://pull:127.0.0.1:8888"];
+	optional	string		meta_file = 103[(f_length)="32",default="test.proto"];
 }

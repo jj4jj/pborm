@@ -572,6 +572,18 @@ class Config : public ::google::protobuf::Message {
   inline ::std::string* release_listen();
   inline void set_allocated_listen(::std::string* listen);
 
+  // optional string meta_file = 103 [default = "test.proto"];
+  inline bool has_meta_file() const;
+  inline void clear_meta_file();
+  static const int kMetaFileFieldNumber = 103;
+  inline const ::std::string& meta_file() const;
+  inline void set_meta_file(const ::std::string& value);
+  inline void set_meta_file(const char* value);
+  inline void set_meta_file(const char* value, size_t size);
+  inline ::std::string* mutable_meta_file();
+  inline ::std::string* release_meta_file();
+  inline void set_allocated_meta_file(::std::string* meta_file);
+
   // @@protoc_insertion_point(class_scope:pborm.Config)
  private:
   inline void set_has_log();
@@ -586,6 +598,8 @@ class Config : public ::google::protobuf::Message {
   inline void clear_has_thread_num();
   inline void set_has_listen();
   inline void clear_has_listen();
+  inline void set_has_meta_file();
+  inline void clear_has_meta_file();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -598,6 +612,8 @@ class Config : public ::google::protobuf::Message {
   ::std::string* meta_path_;
   static ::std::string* _default_listen_;
   ::std::string* listen_;
+  static ::std::string* _default_meta_file_;
+  ::std::string* meta_file_;
   ::google::protobuf::uint32 thread_num_;
   friend void  protobuf_AddDesc_pborm_5fconf_2eproto();
   friend void protobuf_AssignDesc_pborm_5fconf_2eproto();
@@ -1774,6 +1790,82 @@ inline void Config::set_allocated_listen(::std::string* listen) {
     listen_ = const_cast< ::std::string*>(_default_listen_);
   }
   // @@protoc_insertion_point(field_set_allocated:pborm.Config.listen)
+}
+
+// optional string meta_file = 103 [default = "test.proto"];
+inline bool Config::has_meta_file() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void Config::set_has_meta_file() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void Config::clear_has_meta_file() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void Config::clear_meta_file() {
+  if (meta_file_ != _default_meta_file_) {
+    meta_file_->assign(*_default_meta_file_);
+  }
+  clear_has_meta_file();
+}
+inline const ::std::string& Config::meta_file() const {
+  // @@protoc_insertion_point(field_get:pborm.Config.meta_file)
+  return *meta_file_;
+}
+inline void Config::set_meta_file(const ::std::string& value) {
+  set_has_meta_file();
+  if (meta_file_ == _default_meta_file_) {
+    meta_file_ = new ::std::string;
+  }
+  meta_file_->assign(value);
+  // @@protoc_insertion_point(field_set:pborm.Config.meta_file)
+}
+inline void Config::set_meta_file(const char* value) {
+  set_has_meta_file();
+  if (meta_file_ == _default_meta_file_) {
+    meta_file_ = new ::std::string;
+  }
+  meta_file_->assign(value);
+  // @@protoc_insertion_point(field_set_char:pborm.Config.meta_file)
+}
+inline void Config::set_meta_file(const char* value, size_t size) {
+  set_has_meta_file();
+  if (meta_file_ == _default_meta_file_) {
+    meta_file_ = new ::std::string;
+  }
+  meta_file_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:pborm.Config.meta_file)
+}
+inline ::std::string* Config::mutable_meta_file() {
+  set_has_meta_file();
+  if (meta_file_ == _default_meta_file_) {
+    meta_file_ = new ::std::string(*_default_meta_file_);
+  }
+  // @@protoc_insertion_point(field_mutable:pborm.Config.meta_file)
+  return meta_file_;
+}
+inline ::std::string* Config::release_meta_file() {
+  clear_has_meta_file();
+  if (meta_file_ == _default_meta_file_) {
+    return NULL;
+  } else {
+    ::std::string* temp = meta_file_;
+    meta_file_ = const_cast< ::std::string*>(_default_meta_file_);
+    return temp;
+  }
+}
+inline void Config::set_allocated_meta_file(::std::string* meta_file) {
+  if (meta_file_ != _default_meta_file_) {
+    delete meta_file_;
+  }
+  if (meta_file) {
+    set_has_meta_file();
+    meta_file_ = meta_file;
+  } else {
+    clear_has_meta_file();
+    meta_file_ = const_cast< ::std::string*>(_default_meta_file_);
+  }
+  // @@protoc_insertion_point(field_set_allocated:pborm.Config.meta_file)
 }
 
 
