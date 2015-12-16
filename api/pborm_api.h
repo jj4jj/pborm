@@ -24,7 +24,7 @@ struct pborm_result_t {
 };
 
 int         pborm_init(const char * ormaddr);
-int         pborm_destroy();
+void        pborm_destroy();
 int         pborm_poll(int timeout_us = 1000);
 typedef void (* pborm_cb_t)(void *ud, const pborm_result_t & result);
 void        pborm_set_cb(pborm_cb_t cb, void *ud);

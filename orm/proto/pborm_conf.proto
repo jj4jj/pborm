@@ -1,27 +1,26 @@
-
-import "extensions.proto"
+import "extensions.proto";
 package pborm;
 
 message LogConf {
-	optional	string		path  = 1[(f_length)=128,(f_desc)=""];
-	optional	string		level = 2[(f_length)=8,(f_desc)="TRACE,DEBUG,INFO,WARN,ERROR,FATAL"];
-	optional	string		file_pattern = 3[(f_length)=32,"pborm.log"];
-	optional	uint32		max_roll = 4[(f_length)=32,defaultvalue=20];
-	optional	uint32		max_log_size = 5;
+	optional	string		path  = 1[(f_length)="128",(f_desc)="path",default="./"];
+	optional	string		level = 2[(f_length)="8",(f_desc)="TRACE,DEBUG,INFO,WARN,ERROR,FATAL",default="TRACE"];
+	optional	string		file_pattern = 3[(f_length)="32",default="pborm.log"];
+	optional	uint32		max_roll = 4[(f_length)="32",default=20];
+	optional	uint32		max_log_size = 5[default=104857600];
 }
 
 message DBConf {
-	optional	string		ip = 1;
-	optional	uint32		port = 2;
-	optional	string		sock = 3;
-	optional	uint32		reconnect = 4;
-	optional	string		charset = 5;
-	optional	uint32		autocommit = 6;
+	optional	string		ip = 1[(f_length)="32",default="127.0.0.1"];
+	optional	uint32		port = 2[default=3306];
+	optional	string		sock = 3[(f_length)="64",default=""];
+	optional	uint32		reconnect = 4[default=1];
+	optional	string		charset = 5[(f_length)="8",default="utf8"];
+	optional	uint32		autocommit = 6[default=1];
 }
 
 message Config {
 	optional	LogConf		log = 1;
 	optional	DBConf		db = 2;
-	optional	string		proto_path = 3;
-	optional	uint32		thread_num = 4;
+	optional	string		meta_path = 3[(f_length)="64",default="./proto"];
+	optional	uint32		thread_num = 4[default=4];
 }
