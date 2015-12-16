@@ -33,13 +33,16 @@ EXES = [
         {
             'name':'testapi',
             'subdir':'testapi',
-            'includes':['/usr/local/include','3rd/dcpots'],
+            'includes':['/usr/local/include','3rd/dcpots','3rd/hpbex'],
             'linkpaths':['3rd/dcpots/lib'],
-            'src_dirs': [],
+            'src_dirs': ['orm/proto'],
+            'extra_srcs': ['3rd/hpbex/ext_meta.cpp','3rd/hpbex/mysql_gen.cpp','3rd/hpbex/extensions_option.cpp'],
             'linklibs' : [
                 'pborm_api',
                 'dcnode',
+                'dcutil',
                 'libprotobuf.a',
+                'mysqlclient',
             ]
         }
 ]

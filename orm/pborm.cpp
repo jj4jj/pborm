@@ -255,9 +255,12 @@ main(int argc, char ** argv){
     }
     g_ctx.converter = &msc;
 
-    dcnode_config_t dconf;
-    dconf.addr = dcnode_addr_t(config.listen.data);
+    dcnode_config_t dconf;	
+	string listenaddr = "pull:";
+	listenaddr += config.listen.data;
+	dconf.addr = dcnode_addr_t(listenaddr.c_str());
 	dconf.name = "pborm";
+	dconf.max_children_heart_beat_expired = 5;
     dcnode_t * dc = dcnode_create(dconf);
     if (!dc){
         GLOG_ERR("dcnode create error !");

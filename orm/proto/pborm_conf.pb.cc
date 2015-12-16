@@ -192,13 +192,13 @@ void protobuf_AddDesc_pborm_5fconf_2eproto() {
     "\00216\022\036\n\006passwd\030\010 \001(\t:\006123456B\006\232\265\030\00216\022\034\n\006d"
     "bname\030\t \001(\t:\004testB\006\232\265\030\00232\"D\n\013ProcessConf"
     "\022\"\n\007pidfile\030\001 \001(\t:\tpborm.pidB\006\232\265\030\00232\022\021\n\006"
-    "daemon\030\002 \001(\r:\0010\"\370\001\n\006Config\022\033\n\003log\030\001 \001(\0132"
+    "daemon\030\002 \001(\r:\0010\"\363\001\n\006Config\022\033\n\003log\030\001 \001(\0132"
     "\016.pborm.LogConf\022\031\n\002db\030\002 \001(\0132\r.pborm.DBCo"
     "nf\022#\n\007process\030\003 \001(\0132\022.pborm.ProcessConf\022"
     "\"\n\tmeta_path\030d \001(\t:\007./protoB\006\232\265\030\00264\022\025\n\nt"
-    "hread_num\030e \001(\r:\0014\0221\n\006listen\030f \001(\t:\031tcp:"
-    "//pull:127.0.0.1:8888B\006\232\265\030\00264\022#\n\tmeta_fi"
-    "le\030g \001(\t:\010db.protoB\006\232\265\030\00232", 866);
+    "hread_num\030e \001(\r:\0014\022,\n\006listen\030f \001(\t:\024tcp:"
+    "//127.0.0.1:8888B\006\232\265\030\00264\022#\n\tmeta_file\030g "
+    "\001(\t:\010db.protoB\006\232\265\030\00232", 861);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pborm_conf.proto", &protobuf_RegisterTypes);
   LogConf::_default_path_ =
@@ -225,7 +225,7 @@ void protobuf_AddDesc_pborm_5fconf_2eproto() {
   Config::_default_meta_path_ =
       new ::std::string("./proto", 7);
   Config::_default_listen_ =
-      new ::std::string("tcp://pull:127.0.0.1:8888", 25);
+      new ::std::string("tcp://127.0.0.1:8888", 20);
   Config::_default_meta_file_ =
       new ::std::string("db.proto", 8);
   Config::default_instance_ = new Config();
@@ -1879,7 +1879,7 @@ bool Config::MergePartialFromCodedStream(
         break;
       }
 
-      // optional string listen = 102 [default = "tcp://pull:127.0.0.1:8888"];
+      // optional string listen = 102 [default = "tcp://127.0.0.1:8888"];
       case 102: {
         if (tag == 818) {
          parse_listen:
@@ -1971,7 +1971,7 @@ void Config::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(101, this->thread_num(), output);
   }
 
-  // optional string listen = 102 [default = "tcp://pull:127.0.0.1:8888"];
+  // optional string listen = 102 [default = "tcp://127.0.0.1:8888"];
   if (has_listen()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->listen().data(), this->listen().length(),
@@ -2038,7 +2038,7 @@ void Config::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(101, this->thread_num(), target);
   }
 
-  // optional string listen = 102 [default = "tcp://pull:127.0.0.1:8888"];
+  // optional string listen = 102 [default = "tcp://127.0.0.1:8888"];
   if (has_listen()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->listen().data(), this->listen().length(),
@@ -2107,7 +2107,7 @@ int Config::ByteSize() const {
           this->thread_num());
     }
 
-    // optional string listen = 102 [default = "tcp://pull:127.0.0.1:8888"];
+    // optional string listen = 102 [default = "tcp://127.0.0.1:8888"];
     if (has_listen()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(

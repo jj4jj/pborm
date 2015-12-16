@@ -26,9 +26,12 @@ int
 pborm_init(const char * ormaddr){
     g_ctx.msg_buffer.create(MAX_ORM_MSG_BUFF_SIZE);
     dcnode_config_t dconf;
-    dconf.addr = dcnode_addr_t(ormaddr);
+	string connaddr = "push:";
+	connaddr += ormaddr;
+	dconf.addr = dcnode_addr_t(connaddr.c_str());
     dconf.name = "ormc-";
-    dcsutil::strcharsetrandom(dconf.name);
+	dconf.parent_heart_beat_gap = 2;
+    dcsutil::strcharsetrandom(dconf.name, 4);
     auto dc = dcnode_create(dconf);
     if (!dc){
         GLOG_ERR("create dcnode error!");

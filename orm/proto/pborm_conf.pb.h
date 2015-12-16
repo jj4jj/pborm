@@ -576,7 +576,7 @@ class Config : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 thread_num() const;
   inline void set_thread_num(::google::protobuf::uint32 value);
 
-  // optional string listen = 102 [default = "tcp://pull:127.0.0.1:8888"];
+  // optional string listen = 102 [default = "tcp://127.0.0.1:8888"];
   inline bool has_listen() const;
   inline void clear_listen();
   static const int kListenFieldNumber = 102;
@@ -1808,7 +1808,7 @@ inline void Config::set_thread_num(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:pborm.Config.thread_num)
 }
 
-// optional string listen = 102 [default = "tcp://pull:127.0.0.1:8888"];
+// optional string listen = 102 [default = "tcp://127.0.0.1:8888"];
 inline bool Config::has_listen() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
