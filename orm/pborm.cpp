@@ -55,6 +55,15 @@ int main(int argc, char ** argv){
     //->mysql
     mysqlclient_pool_t  mcp;
     mysqlclient_pool_t::mysqlconnx_config_t  mconf;
+    mconf.uname = "gsgame";
+    mconf.passwd = "gsgame";
+    mconf.dbname = "";
+    
+    if (mcp.init(mconf)){
+
+    }
+
+
 
 
     return 0;

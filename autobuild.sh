@@ -7,7 +7,6 @@ if [[ ! -d 3rd/dcpots ]];then
 fi
 
 cd 3rd/dcpots/tools/cmaketools/ && python generate.py ../../../../cmake_conf && cd -
-cd orm && make && cd -
 mkdir -p build
 cd build && cmake ../ && cd -
 cd build && make && cd -
