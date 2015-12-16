@@ -13,7 +13,7 @@ ${PROJECT_SOURCE_DIR}/3rd/dcpots)
 
 add_library(pborm_api STATIC ${cur_SRCS})
 
-link_directories(/usr/local/lib
+link_directories(
 /usr/local/lib)
 
 target_link_libraries(pborm_api

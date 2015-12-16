@@ -39,6 +39,7 @@ class OrmMsgRspSelect;
 class OrmMsgReq;
 class OrmMsgRsp;
 class OrmMsgCB;
+class OrmMsgOpt;
 class OrmMsg;
 
 enum OrmMsgOP {
@@ -248,26 +249,17 @@ class OrmMsgRspSelect : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required .pborm.OrmMsgReqSelect req = 1;
-  inline bool has_req() const;
-  inline void clear_req();
-  static const int kReqFieldNumber = 1;
-  inline const ::pborm::OrmMsgReqSelect& req() const;
-  inline ::pborm::OrmMsgReqSelect* mutable_req();
-  inline ::pborm::OrmMsgReqSelect* release_req();
-  inline void set_allocated_req(::pborm::OrmMsgReqSelect* req);
-
-  // optional int32 total = 2;
+  // optional int32 total = 1;
   inline bool has_total() const;
   inline void clear_total();
-  static const int kTotalFieldNumber = 2;
+  static const int kTotalFieldNumber = 1;
   inline ::google::protobuf::int32 total() const;
   inline void set_total(::google::protobuf::int32 value);
 
-  // repeated bytes msgs = 3;
+  // repeated bytes msgs = 2;
   inline int msgs_size() const;
   inline void clear_msgs();
-  static const int kMsgsFieldNumber = 3;
+  static const int kMsgsFieldNumber = 2;
   inline const ::std::string& msgs(int index) const;
   inline ::std::string* mutable_msgs(int index);
   inline void set_msgs(int index, const ::std::string& value);
@@ -282,8 +274,6 @@ class OrmMsgRspSelect : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:pborm.OrmMsgRspSelect)
  private:
-  inline void set_has_req();
-  inline void clear_has_req();
   inline void set_has_total();
   inline void clear_has_total();
 
@@ -291,7 +281,6 @@ class OrmMsgRspSelect : public ::google::protobuf::Message {
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::pborm::OrmMsgReqSelect* req_;
   ::google::protobuf::RepeatedPtrField< ::std::string> msgs_;
   ::google::protobuf::int32 total_;
   friend void  protobuf_AddDesc_pborm_2eproto();
@@ -619,6 +608,85 @@ class OrmMsgCB : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class OrmMsgOpt : public ::google::protobuf::Message {
+ public:
+  OrmMsgOpt();
+  virtual ~OrmMsgOpt();
+
+  OrmMsgOpt(const OrmMsgOpt& from);
+
+  inline OrmMsgOpt& operator=(const OrmMsgOpt& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const OrmMsgOpt& default_instance();
+
+  void Swap(OrmMsgOpt* other);
+
+  // implements Message ----------------------------------------------
+
+  OrmMsgOpt* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const OrmMsgOpt& from);
+  void MergeFrom(const OrmMsgOpt& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional uint32 flatmode = 1 [default = 0];
+  inline bool has_flatmode() const;
+  inline void clear_flatmode();
+  static const int kFlatmodeFieldNumber = 1;
+  inline ::google::protobuf::uint32 flatmode() const;
+  inline void set_flatmode(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:pborm.OrmMsgOpt)
+ private:
+  inline void set_has_flatmode();
+  inline void clear_has_flatmode();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 flatmode_;
+  friend void  protobuf_AddDesc_pborm_2eproto();
+  friend void protobuf_AssignDesc_pborm_2eproto();
+  friend void protobuf_ShutdownFile_pborm_2eproto();
+
+  void InitAsDefaultInstance();
+  static OrmMsgOpt* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class OrmMsg : public ::google::protobuf::Message {
  public:
   OrmMsg();
@@ -718,6 +786,15 @@ class OrmMsg : public ::google::protobuf::Message {
   inline ::pborm::OrmMsgCB* release_cb();
   inline void set_allocated_cb(::pborm::OrmMsgCB* cb);
 
+  // optional .pborm.OrmMsgOpt opt = 6;
+  inline bool has_opt() const;
+  inline void clear_opt();
+  static const int kOptFieldNumber = 6;
+  inline const ::pborm::OrmMsgOpt& opt() const;
+  inline ::pborm::OrmMsgOpt* mutable_opt();
+  inline ::pborm::OrmMsgOpt* release_opt();
+  inline void set_allocated_opt(::pborm::OrmMsgOpt* opt);
+
   // @@protoc_insertion_point(class_scope:pborm.OrmMsg)
  private:
   inline void set_has_msg_full_type_name();
@@ -730,6 +807,8 @@ class OrmMsg : public ::google::protobuf::Message {
   inline void clear_has_rsp();
   inline void set_has_cb();
   inline void clear_has_cb();
+  inline void set_has_opt();
+  inline void clear_has_opt();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -739,6 +818,7 @@ class OrmMsg : public ::google::protobuf::Message {
   ::pborm::OrmMsgReq* req_;
   ::pborm::OrmMsgRsp* rsp_;
   ::pborm::OrmMsgCB* cb_;
+  ::pborm::OrmMsgOpt* opt_;
   int op_;
   friend void  protobuf_AddDesc_pborm_2eproto();
   friend void protobuf_AssignDesc_pborm_2eproto();
@@ -982,56 +1062,15 @@ inline void OrmMsgReqSelect::set_order(::google::protobuf::int32 value) {
 
 // OrmMsgRspSelect
 
-// required .pborm.OrmMsgReqSelect req = 1;
-inline bool OrmMsgRspSelect::has_req() const {
+// optional int32 total = 1;
+inline bool OrmMsgRspSelect::has_total() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void OrmMsgRspSelect::set_has_req() {
+inline void OrmMsgRspSelect::set_has_total() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void OrmMsgRspSelect::clear_has_req() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void OrmMsgRspSelect::clear_req() {
-  if (req_ != NULL) req_->::pborm::OrmMsgReqSelect::Clear();
-  clear_has_req();
-}
-inline const ::pborm::OrmMsgReqSelect& OrmMsgRspSelect::req() const {
-  // @@protoc_insertion_point(field_get:pborm.OrmMsgRspSelect.req)
-  return req_ != NULL ? *req_ : *default_instance_->req_;
-}
-inline ::pborm::OrmMsgReqSelect* OrmMsgRspSelect::mutable_req() {
-  set_has_req();
-  if (req_ == NULL) req_ = new ::pborm::OrmMsgReqSelect;
-  // @@protoc_insertion_point(field_mutable:pborm.OrmMsgRspSelect.req)
-  return req_;
-}
-inline ::pborm::OrmMsgReqSelect* OrmMsgRspSelect::release_req() {
-  clear_has_req();
-  ::pborm::OrmMsgReqSelect* temp = req_;
-  req_ = NULL;
-  return temp;
-}
-inline void OrmMsgRspSelect::set_allocated_req(::pborm::OrmMsgReqSelect* req) {
-  delete req_;
-  req_ = req;
-  if (req) {
-    set_has_req();
-  } else {
-    clear_has_req();
-  }
-  // @@protoc_insertion_point(field_set_allocated:pborm.OrmMsgRspSelect.req)
-}
-
-// optional int32 total = 2;
-inline bool OrmMsgRspSelect::has_total() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void OrmMsgRspSelect::set_has_total() {
-  _has_bits_[0] |= 0x00000002u;
-}
 inline void OrmMsgRspSelect::clear_has_total() {
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000001u;
 }
 inline void OrmMsgRspSelect::clear_total() {
   total_ = 0;
@@ -1047,7 +1086,7 @@ inline void OrmMsgRspSelect::set_total(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:pborm.OrmMsgRspSelect.total)
 }
 
-// repeated bytes msgs = 3;
+// repeated bytes msgs = 2;
 inline int OrmMsgRspSelect::msgs_size() const {
   return msgs_.size();
 }
@@ -1521,6 +1560,34 @@ inline void OrmMsgCB::set_seq(::google::protobuf::uint32 value) {
 
 // -------------------------------------------------------------------
 
+// OrmMsgOpt
+
+// optional uint32 flatmode = 1 [default = 0];
+inline bool OrmMsgOpt::has_flatmode() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void OrmMsgOpt::set_has_flatmode() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void OrmMsgOpt::clear_has_flatmode() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void OrmMsgOpt::clear_flatmode() {
+  flatmode_ = 0u;
+  clear_has_flatmode();
+}
+inline ::google::protobuf::uint32 OrmMsgOpt::flatmode() const {
+  // @@protoc_insertion_point(field_get:pborm.OrmMsgOpt.flatmode)
+  return flatmode_;
+}
+inline void OrmMsgOpt::set_flatmode(::google::protobuf::uint32 value) {
+  set_has_flatmode();
+  flatmode_ = value;
+  // @@protoc_insertion_point(field_set:pborm.OrmMsgOpt.flatmode)
+}
+
+// -------------------------------------------------------------------
+
 // OrmMsg
 
 // required string msg_full_type_name = 1;
@@ -1745,6 +1812,47 @@ inline void OrmMsg::set_allocated_cb(::pborm::OrmMsgCB* cb) {
     clear_has_cb();
   }
   // @@protoc_insertion_point(field_set_allocated:pborm.OrmMsg.cb)
+}
+
+// optional .pborm.OrmMsgOpt opt = 6;
+inline bool OrmMsg::has_opt() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void OrmMsg::set_has_opt() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void OrmMsg::clear_has_opt() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void OrmMsg::clear_opt() {
+  if (opt_ != NULL) opt_->::pborm::OrmMsgOpt::Clear();
+  clear_has_opt();
+}
+inline const ::pborm::OrmMsgOpt& OrmMsg::opt() const {
+  // @@protoc_insertion_point(field_get:pborm.OrmMsg.opt)
+  return opt_ != NULL ? *opt_ : *default_instance_->opt_;
+}
+inline ::pborm::OrmMsgOpt* OrmMsg::mutable_opt() {
+  set_has_opt();
+  if (opt_ == NULL) opt_ = new ::pborm::OrmMsgOpt;
+  // @@protoc_insertion_point(field_mutable:pborm.OrmMsg.opt)
+  return opt_;
+}
+inline ::pborm::OrmMsgOpt* OrmMsg::release_opt() {
+  clear_has_opt();
+  ::pborm::OrmMsgOpt* temp = opt_;
+  opt_ = NULL;
+  return temp;
+}
+inline void OrmMsg::set_allocated_opt(::pborm::OrmMsgOpt* opt) {
+  delete opt_;
+  opt_ = opt;
+  if (opt) {
+    set_has_opt();
+  } else {
+    clear_has_opt();
+  }
+  // @@protoc_insertion_point(field_set_allocated:pborm.OrmMsg.opt)
 }
 
 

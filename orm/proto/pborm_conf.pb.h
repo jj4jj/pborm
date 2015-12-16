@@ -36,6 +36,7 @@ void protobuf_ShutdownFile_pborm_5fconf_2eproto();
 
 class LogConf;
 class DBConf;
+class ProcessConf;
 class Config;
 
 // ===================================================================
@@ -136,12 +137,19 @@ class LogConf : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 max_roll() const;
   inline void set_max_roll(::google::protobuf::uint32 value);
 
-  // optional uint32 max_log_size = 5 [default = 104857600];
-  inline bool has_max_log_size() const;
-  inline void clear_max_log_size();
-  static const int kMaxLogSizeFieldNumber = 5;
-  inline ::google::protobuf::uint32 max_log_size() const;
-  inline void set_max_log_size(::google::protobuf::uint32 value);
+  // optional uint32 max_file_size = 5 [default = 104857600];
+  inline bool has_max_file_size() const;
+  inline void clear_max_file_size();
+  static const int kMaxFileSizeFieldNumber = 5;
+  inline ::google::protobuf::uint32 max_file_size() const;
+  inline void set_max_file_size(::google::protobuf::uint32 value);
+
+  // optional uint32 max_line_size = 6 [default = 1024000];
+  inline bool has_max_line_size() const;
+  inline void clear_max_line_size();
+  static const int kMaxLineSizeFieldNumber = 6;
+  inline ::google::protobuf::uint32 max_line_size() const;
+  inline void set_max_line_size(::google::protobuf::uint32 value);
 
   // @@protoc_insertion_point(class_scope:pborm.LogConf)
  private:
@@ -153,8 +161,10 @@ class LogConf : public ::google::protobuf::Message {
   inline void clear_has_file_pattern();
   inline void set_has_max_roll();
   inline void clear_has_max_roll();
-  inline void set_has_max_log_size();
-  inline void clear_has_max_log_size();
+  inline void set_has_max_file_size();
+  inline void clear_has_max_file_size();
+  inline void set_has_max_line_size();
+  inline void clear_has_max_line_size();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -167,7 +177,8 @@ class LogConf : public ::google::protobuf::Message {
   static ::std::string* _default_file_pattern_;
   ::std::string* file_pattern_;
   ::google::protobuf::uint32 max_roll_;
-  ::google::protobuf::uint32 max_log_size_;
+  ::google::protobuf::uint32 max_file_size_;
+  ::google::protobuf::uint32 max_line_size_;
   friend void  protobuf_AddDesc_pborm_5fconf_2eproto();
   friend void protobuf_AssignDesc_pborm_5fconf_2eproto();
   friend void protobuf_ShutdownFile_pborm_5fconf_2eproto();
@@ -287,6 +298,30 @@ class DBConf : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 autocommit() const;
   inline void set_autocommit(::google::protobuf::uint32 value);
 
+  // optional string uname = 7 [default = "gsgame"];
+  inline bool has_uname() const;
+  inline void clear_uname();
+  static const int kUnameFieldNumber = 7;
+  inline const ::std::string& uname() const;
+  inline void set_uname(const ::std::string& value);
+  inline void set_uname(const char* value);
+  inline void set_uname(const char* value, size_t size);
+  inline ::std::string* mutable_uname();
+  inline ::std::string* release_uname();
+  inline void set_allocated_uname(::std::string* uname);
+
+  // optional string passwd = 8 [default = "gsgame"];
+  inline bool has_passwd() const;
+  inline void clear_passwd();
+  static const int kPasswdFieldNumber = 8;
+  inline const ::std::string& passwd() const;
+  inline void set_passwd(const ::std::string& value);
+  inline void set_passwd(const char* value);
+  inline void set_passwd(const char* value, size_t size);
+  inline ::std::string* mutable_passwd();
+  inline ::std::string* release_passwd();
+  inline void set_allocated_passwd(::std::string* passwd);
+
   // @@protoc_insertion_point(class_scope:pborm.DBConf)
  private:
   inline void set_has_ip();
@@ -301,6 +336,10 @@ class DBConf : public ::google::protobuf::Message {
   inline void clear_has_charset();
   inline void set_has_autocommit();
   inline void clear_has_autocommit();
+  inline void set_has_uname();
+  inline void clear_has_uname();
+  inline void set_has_passwd();
+  inline void clear_has_passwd();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -313,6 +352,10 @@ class DBConf : public ::google::protobuf::Message {
   ::google::protobuf::uint32 reconnect_;
   static ::std::string* _default_charset_;
   ::std::string* charset_;
+  static ::std::string* _default_uname_;
+  ::std::string* uname_;
+  static ::std::string* _default_passwd_;
+  ::std::string* passwd_;
   ::google::protobuf::uint32 autocommit_;
   friend void  protobuf_AddDesc_pborm_5fconf_2eproto();
   friend void protobuf_AssignDesc_pborm_5fconf_2eproto();
@@ -320,6 +363,101 @@ class DBConf : public ::google::protobuf::Message {
 
   void InitAsDefaultInstance();
   static DBConf* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ProcessConf : public ::google::protobuf::Message {
+ public:
+  ProcessConf();
+  virtual ~ProcessConf();
+
+  ProcessConf(const ProcessConf& from);
+
+  inline ProcessConf& operator=(const ProcessConf& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ProcessConf& default_instance();
+
+  void Swap(ProcessConf* other);
+
+  // implements Message ----------------------------------------------
+
+  ProcessConf* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ProcessConf& from);
+  void MergeFrom(const ProcessConf& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string pidfile = 1 [default = "pborm.pid"];
+  inline bool has_pidfile() const;
+  inline void clear_pidfile();
+  static const int kPidfileFieldNumber = 1;
+  inline const ::std::string& pidfile() const;
+  inline void set_pidfile(const ::std::string& value);
+  inline void set_pidfile(const char* value);
+  inline void set_pidfile(const char* value, size_t size);
+  inline ::std::string* mutable_pidfile();
+  inline ::std::string* release_pidfile();
+  inline void set_allocated_pidfile(::std::string* pidfile);
+
+  // optional uint32 daemon = 2 [default = 0];
+  inline bool has_daemon() const;
+  inline void clear_daemon();
+  static const int kDaemonFieldNumber = 2;
+  inline ::google::protobuf::uint32 daemon() const;
+  inline void set_daemon(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:pborm.ProcessConf)
+ private:
+  inline void set_has_pidfile();
+  inline void clear_has_pidfile();
+  inline void set_has_daemon();
+  inline void clear_has_daemon();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  static ::std::string* _default_pidfile_;
+  ::std::string* pidfile_;
+  ::google::protobuf::uint32 daemon_;
+  friend void  protobuf_AddDesc_pborm_5fconf_2eproto();
+  friend void protobuf_AssignDesc_pborm_5fconf_2eproto();
+  friend void protobuf_ShutdownFile_pborm_5fconf_2eproto();
+
+  void InitAsDefaultInstance();
+  static ProcessConf* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -394,10 +532,19 @@ class Config : public ::google::protobuf::Message {
   inline ::pborm::DBConf* release_db();
   inline void set_allocated_db(::pborm::DBConf* db);
 
-  // optional string meta_path = 3 [default = "./proto"];
+  // optional .pborm.ProcessConf process = 3;
+  inline bool has_process() const;
+  inline void clear_process();
+  static const int kProcessFieldNumber = 3;
+  inline const ::pborm::ProcessConf& process() const;
+  inline ::pborm::ProcessConf* mutable_process();
+  inline ::pborm::ProcessConf* release_process();
+  inline void set_allocated_process(::pborm::ProcessConf* process);
+
+  // optional string meta_path = 100 [default = "./proto"];
   inline bool has_meta_path() const;
   inline void clear_meta_path();
-  static const int kMetaPathFieldNumber = 3;
+  static const int kMetaPathFieldNumber = 100;
   inline const ::std::string& meta_path() const;
   inline void set_meta_path(const ::std::string& value);
   inline void set_meta_path(const char* value);
@@ -406,12 +553,24 @@ class Config : public ::google::protobuf::Message {
   inline ::std::string* release_meta_path();
   inline void set_allocated_meta_path(::std::string* meta_path);
 
-  // optional uint32 thread_num = 4 [default = 4];
+  // optional uint32 thread_num = 101 [default = 4];
   inline bool has_thread_num() const;
   inline void clear_thread_num();
-  static const int kThreadNumFieldNumber = 4;
+  static const int kThreadNumFieldNumber = 101;
   inline ::google::protobuf::uint32 thread_num() const;
   inline void set_thread_num(::google::protobuf::uint32 value);
+
+  // optional string listen = 102 [default = "tcp://pull:127.0.0.1:8888"];
+  inline bool has_listen() const;
+  inline void clear_listen();
+  static const int kListenFieldNumber = 102;
+  inline const ::std::string& listen() const;
+  inline void set_listen(const ::std::string& value);
+  inline void set_listen(const char* value);
+  inline void set_listen(const char* value, size_t size);
+  inline ::std::string* mutable_listen();
+  inline ::std::string* release_listen();
+  inline void set_allocated_listen(::std::string* listen);
 
   // @@protoc_insertion_point(class_scope:pborm.Config)
  private:
@@ -419,10 +578,14 @@ class Config : public ::google::protobuf::Message {
   inline void clear_has_log();
   inline void set_has_db();
   inline void clear_has_db();
+  inline void set_has_process();
+  inline void clear_has_process();
   inline void set_has_meta_path();
   inline void clear_has_meta_path();
   inline void set_has_thread_num();
   inline void clear_has_thread_num();
+  inline void set_has_listen();
+  inline void clear_has_listen();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -430,8 +593,11 @@ class Config : public ::google::protobuf::Message {
   mutable int _cached_size_;
   ::pborm::LogConf* log_;
   ::pborm::DBConf* db_;
+  ::pborm::ProcessConf* process_;
   static ::std::string* _default_meta_path_;
   ::std::string* meta_path_;
+  static ::std::string* _default_listen_;
+  ::std::string* listen_;
   ::google::protobuf::uint32 thread_num_;
   friend void  protobuf_AddDesc_pborm_5fconf_2eproto();
   friend void protobuf_AssignDesc_pborm_5fconf_2eproto();
@@ -699,28 +865,52 @@ inline void LogConf::set_max_roll(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:pborm.LogConf.max_roll)
 }
 
-// optional uint32 max_log_size = 5 [default = 104857600];
-inline bool LogConf::has_max_log_size() const {
+// optional uint32 max_file_size = 5 [default = 104857600];
+inline bool LogConf::has_max_file_size() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
-inline void LogConf::set_has_max_log_size() {
+inline void LogConf::set_has_max_file_size() {
   _has_bits_[0] |= 0x00000010u;
 }
-inline void LogConf::clear_has_max_log_size() {
+inline void LogConf::clear_has_max_file_size() {
   _has_bits_[0] &= ~0x00000010u;
 }
-inline void LogConf::clear_max_log_size() {
-  max_log_size_ = 104857600u;
-  clear_has_max_log_size();
+inline void LogConf::clear_max_file_size() {
+  max_file_size_ = 104857600u;
+  clear_has_max_file_size();
 }
-inline ::google::protobuf::uint32 LogConf::max_log_size() const {
-  // @@protoc_insertion_point(field_get:pborm.LogConf.max_log_size)
-  return max_log_size_;
+inline ::google::protobuf::uint32 LogConf::max_file_size() const {
+  // @@protoc_insertion_point(field_get:pborm.LogConf.max_file_size)
+  return max_file_size_;
 }
-inline void LogConf::set_max_log_size(::google::protobuf::uint32 value) {
-  set_has_max_log_size();
-  max_log_size_ = value;
-  // @@protoc_insertion_point(field_set:pborm.LogConf.max_log_size)
+inline void LogConf::set_max_file_size(::google::protobuf::uint32 value) {
+  set_has_max_file_size();
+  max_file_size_ = value;
+  // @@protoc_insertion_point(field_set:pborm.LogConf.max_file_size)
+}
+
+// optional uint32 max_line_size = 6 [default = 1024000];
+inline bool LogConf::has_max_line_size() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void LogConf::set_has_max_line_size() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void LogConf::clear_has_max_line_size() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void LogConf::clear_max_line_size() {
+  max_line_size_ = 1024000u;
+  clear_has_max_line_size();
+}
+inline ::google::protobuf::uint32 LogConf::max_line_size() const {
+  // @@protoc_insertion_point(field_get:pborm.LogConf.max_line_size)
+  return max_line_size_;
+}
+inline void LogConf::set_max_line_size(::google::protobuf::uint32 value) {
+  set_has_max_line_size();
+  max_line_size_ = value;
+  // @@protoc_insertion_point(field_set:pborm.LogConf.max_line_size)
 }
 
 // -------------------------------------------------------------------
@@ -1027,6 +1217,262 @@ inline void DBConf::set_autocommit(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:pborm.DBConf.autocommit)
 }
 
+// optional string uname = 7 [default = "gsgame"];
+inline bool DBConf::has_uname() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void DBConf::set_has_uname() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void DBConf::clear_has_uname() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void DBConf::clear_uname() {
+  if (uname_ != _default_uname_) {
+    uname_->assign(*_default_uname_);
+  }
+  clear_has_uname();
+}
+inline const ::std::string& DBConf::uname() const {
+  // @@protoc_insertion_point(field_get:pborm.DBConf.uname)
+  return *uname_;
+}
+inline void DBConf::set_uname(const ::std::string& value) {
+  set_has_uname();
+  if (uname_ == _default_uname_) {
+    uname_ = new ::std::string;
+  }
+  uname_->assign(value);
+  // @@protoc_insertion_point(field_set:pborm.DBConf.uname)
+}
+inline void DBConf::set_uname(const char* value) {
+  set_has_uname();
+  if (uname_ == _default_uname_) {
+    uname_ = new ::std::string;
+  }
+  uname_->assign(value);
+  // @@protoc_insertion_point(field_set_char:pborm.DBConf.uname)
+}
+inline void DBConf::set_uname(const char* value, size_t size) {
+  set_has_uname();
+  if (uname_ == _default_uname_) {
+    uname_ = new ::std::string;
+  }
+  uname_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:pborm.DBConf.uname)
+}
+inline ::std::string* DBConf::mutable_uname() {
+  set_has_uname();
+  if (uname_ == _default_uname_) {
+    uname_ = new ::std::string(*_default_uname_);
+  }
+  // @@protoc_insertion_point(field_mutable:pborm.DBConf.uname)
+  return uname_;
+}
+inline ::std::string* DBConf::release_uname() {
+  clear_has_uname();
+  if (uname_ == _default_uname_) {
+    return NULL;
+  } else {
+    ::std::string* temp = uname_;
+    uname_ = const_cast< ::std::string*>(_default_uname_);
+    return temp;
+  }
+}
+inline void DBConf::set_allocated_uname(::std::string* uname) {
+  if (uname_ != _default_uname_) {
+    delete uname_;
+  }
+  if (uname) {
+    set_has_uname();
+    uname_ = uname;
+  } else {
+    clear_has_uname();
+    uname_ = const_cast< ::std::string*>(_default_uname_);
+  }
+  // @@protoc_insertion_point(field_set_allocated:pborm.DBConf.uname)
+}
+
+// optional string passwd = 8 [default = "gsgame"];
+inline bool DBConf::has_passwd() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void DBConf::set_has_passwd() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void DBConf::clear_has_passwd() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void DBConf::clear_passwd() {
+  if (passwd_ != _default_passwd_) {
+    passwd_->assign(*_default_passwd_);
+  }
+  clear_has_passwd();
+}
+inline const ::std::string& DBConf::passwd() const {
+  // @@protoc_insertion_point(field_get:pborm.DBConf.passwd)
+  return *passwd_;
+}
+inline void DBConf::set_passwd(const ::std::string& value) {
+  set_has_passwd();
+  if (passwd_ == _default_passwd_) {
+    passwd_ = new ::std::string;
+  }
+  passwd_->assign(value);
+  // @@protoc_insertion_point(field_set:pborm.DBConf.passwd)
+}
+inline void DBConf::set_passwd(const char* value) {
+  set_has_passwd();
+  if (passwd_ == _default_passwd_) {
+    passwd_ = new ::std::string;
+  }
+  passwd_->assign(value);
+  // @@protoc_insertion_point(field_set_char:pborm.DBConf.passwd)
+}
+inline void DBConf::set_passwd(const char* value, size_t size) {
+  set_has_passwd();
+  if (passwd_ == _default_passwd_) {
+    passwd_ = new ::std::string;
+  }
+  passwd_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:pborm.DBConf.passwd)
+}
+inline ::std::string* DBConf::mutable_passwd() {
+  set_has_passwd();
+  if (passwd_ == _default_passwd_) {
+    passwd_ = new ::std::string(*_default_passwd_);
+  }
+  // @@protoc_insertion_point(field_mutable:pborm.DBConf.passwd)
+  return passwd_;
+}
+inline ::std::string* DBConf::release_passwd() {
+  clear_has_passwd();
+  if (passwd_ == _default_passwd_) {
+    return NULL;
+  } else {
+    ::std::string* temp = passwd_;
+    passwd_ = const_cast< ::std::string*>(_default_passwd_);
+    return temp;
+  }
+}
+inline void DBConf::set_allocated_passwd(::std::string* passwd) {
+  if (passwd_ != _default_passwd_) {
+    delete passwd_;
+  }
+  if (passwd) {
+    set_has_passwd();
+    passwd_ = passwd;
+  } else {
+    clear_has_passwd();
+    passwd_ = const_cast< ::std::string*>(_default_passwd_);
+  }
+  // @@protoc_insertion_point(field_set_allocated:pborm.DBConf.passwd)
+}
+
+// -------------------------------------------------------------------
+
+// ProcessConf
+
+// optional string pidfile = 1 [default = "pborm.pid"];
+inline bool ProcessConf::has_pidfile() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ProcessConf::set_has_pidfile() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ProcessConf::clear_has_pidfile() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void ProcessConf::clear_pidfile() {
+  if (pidfile_ != _default_pidfile_) {
+    pidfile_->assign(*_default_pidfile_);
+  }
+  clear_has_pidfile();
+}
+inline const ::std::string& ProcessConf::pidfile() const {
+  // @@protoc_insertion_point(field_get:pborm.ProcessConf.pidfile)
+  return *pidfile_;
+}
+inline void ProcessConf::set_pidfile(const ::std::string& value) {
+  set_has_pidfile();
+  if (pidfile_ == _default_pidfile_) {
+    pidfile_ = new ::std::string;
+  }
+  pidfile_->assign(value);
+  // @@protoc_insertion_point(field_set:pborm.ProcessConf.pidfile)
+}
+inline void ProcessConf::set_pidfile(const char* value) {
+  set_has_pidfile();
+  if (pidfile_ == _default_pidfile_) {
+    pidfile_ = new ::std::string;
+  }
+  pidfile_->assign(value);
+  // @@protoc_insertion_point(field_set_char:pborm.ProcessConf.pidfile)
+}
+inline void ProcessConf::set_pidfile(const char* value, size_t size) {
+  set_has_pidfile();
+  if (pidfile_ == _default_pidfile_) {
+    pidfile_ = new ::std::string;
+  }
+  pidfile_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:pborm.ProcessConf.pidfile)
+}
+inline ::std::string* ProcessConf::mutable_pidfile() {
+  set_has_pidfile();
+  if (pidfile_ == _default_pidfile_) {
+    pidfile_ = new ::std::string(*_default_pidfile_);
+  }
+  // @@protoc_insertion_point(field_mutable:pborm.ProcessConf.pidfile)
+  return pidfile_;
+}
+inline ::std::string* ProcessConf::release_pidfile() {
+  clear_has_pidfile();
+  if (pidfile_ == _default_pidfile_) {
+    return NULL;
+  } else {
+    ::std::string* temp = pidfile_;
+    pidfile_ = const_cast< ::std::string*>(_default_pidfile_);
+    return temp;
+  }
+}
+inline void ProcessConf::set_allocated_pidfile(::std::string* pidfile) {
+  if (pidfile_ != _default_pidfile_) {
+    delete pidfile_;
+  }
+  if (pidfile) {
+    set_has_pidfile();
+    pidfile_ = pidfile;
+  } else {
+    clear_has_pidfile();
+    pidfile_ = const_cast< ::std::string*>(_default_pidfile_);
+  }
+  // @@protoc_insertion_point(field_set_allocated:pborm.ProcessConf.pidfile)
+}
+
+// optional uint32 daemon = 2 [default = 0];
+inline bool ProcessConf::has_daemon() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void ProcessConf::set_has_daemon() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void ProcessConf::clear_has_daemon() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void ProcessConf::clear_daemon() {
+  daemon_ = 0u;
+  clear_has_daemon();
+}
+inline ::google::protobuf::uint32 ProcessConf::daemon() const {
+  // @@protoc_insertion_point(field_get:pborm.ProcessConf.daemon)
+  return daemon_;
+}
+inline void ProcessConf::set_daemon(::google::protobuf::uint32 value) {
+  set_has_daemon();
+  daemon_ = value;
+  // @@protoc_insertion_point(field_set:pborm.ProcessConf.daemon)
+}
+
 // -------------------------------------------------------------------
 
 // Config
@@ -1113,15 +1559,56 @@ inline void Config::set_allocated_db(::pborm::DBConf* db) {
   // @@protoc_insertion_point(field_set_allocated:pborm.Config.db)
 }
 
-// optional string meta_path = 3 [default = "./proto"];
-inline bool Config::has_meta_path() const {
+// optional .pborm.ProcessConf process = 3;
+inline bool Config::has_process() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void Config::set_has_meta_path() {
+inline void Config::set_has_process() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void Config::clear_has_meta_path() {
+inline void Config::clear_has_process() {
   _has_bits_[0] &= ~0x00000004u;
+}
+inline void Config::clear_process() {
+  if (process_ != NULL) process_->::pborm::ProcessConf::Clear();
+  clear_has_process();
+}
+inline const ::pborm::ProcessConf& Config::process() const {
+  // @@protoc_insertion_point(field_get:pborm.Config.process)
+  return process_ != NULL ? *process_ : *default_instance_->process_;
+}
+inline ::pborm::ProcessConf* Config::mutable_process() {
+  set_has_process();
+  if (process_ == NULL) process_ = new ::pborm::ProcessConf;
+  // @@protoc_insertion_point(field_mutable:pborm.Config.process)
+  return process_;
+}
+inline ::pborm::ProcessConf* Config::release_process() {
+  clear_has_process();
+  ::pborm::ProcessConf* temp = process_;
+  process_ = NULL;
+  return temp;
+}
+inline void Config::set_allocated_process(::pborm::ProcessConf* process) {
+  delete process_;
+  process_ = process;
+  if (process) {
+    set_has_process();
+  } else {
+    clear_has_process();
+  }
+  // @@protoc_insertion_point(field_set_allocated:pborm.Config.process)
+}
+
+// optional string meta_path = 100 [default = "./proto"];
+inline bool Config::has_meta_path() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Config::set_has_meta_path() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Config::clear_has_meta_path() {
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void Config::clear_meta_path() {
   if (meta_path_ != _default_meta_path_) {
@@ -1189,15 +1676,15 @@ inline void Config::set_allocated_meta_path(::std::string* meta_path) {
   // @@protoc_insertion_point(field_set_allocated:pborm.Config.meta_path)
 }
 
-// optional uint32 thread_num = 4 [default = 4];
+// optional uint32 thread_num = 101 [default = 4];
 inline bool Config::has_thread_num() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void Config::set_has_thread_num() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000010u;
 }
 inline void Config::clear_has_thread_num() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void Config::clear_thread_num() {
   thread_num_ = 4u;
@@ -1211,6 +1698,82 @@ inline void Config::set_thread_num(::google::protobuf::uint32 value) {
   set_has_thread_num();
   thread_num_ = value;
   // @@protoc_insertion_point(field_set:pborm.Config.thread_num)
+}
+
+// optional string listen = 102 [default = "tcp://pull:127.0.0.1:8888"];
+inline bool Config::has_listen() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void Config::set_has_listen() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void Config::clear_has_listen() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void Config::clear_listen() {
+  if (listen_ != _default_listen_) {
+    listen_->assign(*_default_listen_);
+  }
+  clear_has_listen();
+}
+inline const ::std::string& Config::listen() const {
+  // @@protoc_insertion_point(field_get:pborm.Config.listen)
+  return *listen_;
+}
+inline void Config::set_listen(const ::std::string& value) {
+  set_has_listen();
+  if (listen_ == _default_listen_) {
+    listen_ = new ::std::string;
+  }
+  listen_->assign(value);
+  // @@protoc_insertion_point(field_set:pborm.Config.listen)
+}
+inline void Config::set_listen(const char* value) {
+  set_has_listen();
+  if (listen_ == _default_listen_) {
+    listen_ = new ::std::string;
+  }
+  listen_->assign(value);
+  // @@protoc_insertion_point(field_set_char:pborm.Config.listen)
+}
+inline void Config::set_listen(const char* value, size_t size) {
+  set_has_listen();
+  if (listen_ == _default_listen_) {
+    listen_ = new ::std::string;
+  }
+  listen_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:pborm.Config.listen)
+}
+inline ::std::string* Config::mutable_listen() {
+  set_has_listen();
+  if (listen_ == _default_listen_) {
+    listen_ = new ::std::string(*_default_listen_);
+  }
+  // @@protoc_insertion_point(field_mutable:pborm.Config.listen)
+  return listen_;
+}
+inline ::std::string* Config::release_listen() {
+  clear_has_listen();
+  if (listen_ == _default_listen_) {
+    return NULL;
+  } else {
+    ::std::string* temp = listen_;
+    listen_ = const_cast< ::std::string*>(_default_listen_);
+    return temp;
+  }
+}
+inline void Config::set_allocated_listen(::std::string* listen) {
+  if (listen_ != _default_listen_) {
+    delete listen_;
+  }
+  if (listen) {
+    set_has_listen();
+    listen_ = listen;
+  } else {
+    clear_has_listen();
+    listen_ = const_cast< ::std::string*>(_default_listen_);
+  }
+  // @@protoc_insertion_point(field_set_allocated:pborm.Config.listen)
 }
 
 
