@@ -298,7 +298,7 @@ class DBConf : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 autocommit() const;
   inline void set_autocommit(::google::protobuf::uint32 value);
 
-  // optional string uname = 7 [default = "gsgame"];
+  // optional string uname = 7 [default = "test"];
   inline bool has_uname() const;
   inline void clear_uname();
   static const int kUnameFieldNumber = 7;
@@ -310,7 +310,7 @@ class DBConf : public ::google::protobuf::Message {
   inline ::std::string* release_uname();
   inline void set_allocated_uname(::std::string* uname);
 
-  // optional string passwd = 8 [default = "gsgame"];
+  // optional string passwd = 8 [default = "123456"];
   inline bool has_passwd() const;
   inline void clear_passwd();
   static const int kPasswdFieldNumber = 8;
@@ -321,6 +321,18 @@ class DBConf : public ::google::protobuf::Message {
   inline ::std::string* mutable_passwd();
   inline ::std::string* release_passwd();
   inline void set_allocated_passwd(::std::string* passwd);
+
+  // optional string dbname = 9 [default = "test"];
+  inline bool has_dbname() const;
+  inline void clear_dbname();
+  static const int kDbnameFieldNumber = 9;
+  inline const ::std::string& dbname() const;
+  inline void set_dbname(const ::std::string& value);
+  inline void set_dbname(const char* value);
+  inline void set_dbname(const char* value, size_t size);
+  inline ::std::string* mutable_dbname();
+  inline ::std::string* release_dbname();
+  inline void set_allocated_dbname(::std::string* dbname);
 
   // @@protoc_insertion_point(class_scope:pborm.DBConf)
  private:
@@ -340,6 +352,8 @@ class DBConf : public ::google::protobuf::Message {
   inline void clear_has_uname();
   inline void set_has_passwd();
   inline void clear_has_passwd();
+  inline void set_has_dbname();
+  inline void clear_has_dbname();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -356,6 +370,8 @@ class DBConf : public ::google::protobuf::Message {
   ::std::string* uname_;
   static ::std::string* _default_passwd_;
   ::std::string* passwd_;
+  static ::std::string* _default_dbname_;
+  ::std::string* dbname_;
   ::google::protobuf::uint32 autocommit_;
   friend void  protobuf_AddDesc_pborm_5fconf_2eproto();
   friend void protobuf_AssignDesc_pborm_5fconf_2eproto();
@@ -572,7 +588,7 @@ class Config : public ::google::protobuf::Message {
   inline ::std::string* release_listen();
   inline void set_allocated_listen(::std::string* listen);
 
-  // optional string meta_file = 103 [default = "test.proto"];
+  // optional string meta_file = 103 [default = "db.proto"];
   inline bool has_meta_file() const;
   inline void clear_meta_file();
   static const int kMetaFileFieldNumber = 103;
@@ -1233,7 +1249,7 @@ inline void DBConf::set_autocommit(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:pborm.DBConf.autocommit)
 }
 
-// optional string uname = 7 [default = "gsgame"];
+// optional string uname = 7 [default = "test"];
 inline bool DBConf::has_uname() const {
   return (_has_bits_[0] & 0x00000040u) != 0;
 }
@@ -1309,7 +1325,7 @@ inline void DBConf::set_allocated_uname(::std::string* uname) {
   // @@protoc_insertion_point(field_set_allocated:pborm.DBConf.uname)
 }
 
-// optional string passwd = 8 [default = "gsgame"];
+// optional string passwd = 8 [default = "123456"];
 inline bool DBConf::has_passwd() const {
   return (_has_bits_[0] & 0x00000080u) != 0;
 }
@@ -1383,6 +1399,82 @@ inline void DBConf::set_allocated_passwd(::std::string* passwd) {
     passwd_ = const_cast< ::std::string*>(_default_passwd_);
   }
   // @@protoc_insertion_point(field_set_allocated:pborm.DBConf.passwd)
+}
+
+// optional string dbname = 9 [default = "test"];
+inline bool DBConf::has_dbname() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void DBConf::set_has_dbname() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void DBConf::clear_has_dbname() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void DBConf::clear_dbname() {
+  if (dbname_ != _default_dbname_) {
+    dbname_->assign(*_default_dbname_);
+  }
+  clear_has_dbname();
+}
+inline const ::std::string& DBConf::dbname() const {
+  // @@protoc_insertion_point(field_get:pborm.DBConf.dbname)
+  return *dbname_;
+}
+inline void DBConf::set_dbname(const ::std::string& value) {
+  set_has_dbname();
+  if (dbname_ == _default_dbname_) {
+    dbname_ = new ::std::string;
+  }
+  dbname_->assign(value);
+  // @@protoc_insertion_point(field_set:pborm.DBConf.dbname)
+}
+inline void DBConf::set_dbname(const char* value) {
+  set_has_dbname();
+  if (dbname_ == _default_dbname_) {
+    dbname_ = new ::std::string;
+  }
+  dbname_->assign(value);
+  // @@protoc_insertion_point(field_set_char:pborm.DBConf.dbname)
+}
+inline void DBConf::set_dbname(const char* value, size_t size) {
+  set_has_dbname();
+  if (dbname_ == _default_dbname_) {
+    dbname_ = new ::std::string;
+  }
+  dbname_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:pborm.DBConf.dbname)
+}
+inline ::std::string* DBConf::mutable_dbname() {
+  set_has_dbname();
+  if (dbname_ == _default_dbname_) {
+    dbname_ = new ::std::string(*_default_dbname_);
+  }
+  // @@protoc_insertion_point(field_mutable:pborm.DBConf.dbname)
+  return dbname_;
+}
+inline ::std::string* DBConf::release_dbname() {
+  clear_has_dbname();
+  if (dbname_ == _default_dbname_) {
+    return NULL;
+  } else {
+    ::std::string* temp = dbname_;
+    dbname_ = const_cast< ::std::string*>(_default_dbname_);
+    return temp;
+  }
+}
+inline void DBConf::set_allocated_dbname(::std::string* dbname) {
+  if (dbname_ != _default_dbname_) {
+    delete dbname_;
+  }
+  if (dbname) {
+    set_has_dbname();
+    dbname_ = dbname;
+  } else {
+    clear_has_dbname();
+    dbname_ = const_cast< ::std::string*>(_default_dbname_);
+  }
+  // @@protoc_insertion_point(field_set_allocated:pborm.DBConf.dbname)
 }
 
 // -------------------------------------------------------------------
@@ -1792,7 +1884,7 @@ inline void Config::set_allocated_listen(::std::string* listen) {
   // @@protoc_insertion_point(field_set_allocated:pborm.Config.listen)
 }
 
-// optional string meta_file = 103 [default = "test.proto"];
+// optional string meta_file = 103 [default = "db.proto"];
 inline bool Config::has_meta_file() const {
   return (_has_bits_[0] & 0x00000040u) != 0;
 }

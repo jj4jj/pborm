@@ -63,7 +63,7 @@ void protobuf_AssignDesc_pborm_5fconf_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LogConf));
   DBConf_descriptor_ = file->message_type(1);
-  static const int DBConf_offsets_[8] = {
+  static const int DBConf_offsets_[9] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DBConf, ip_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DBConf, port_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DBConf, sock_),
@@ -72,6 +72,7 @@ void protobuf_AssignDesc_pborm_5fconf_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DBConf, autocommit_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DBConf, uname_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DBConf, passwd_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DBConf, dbname_),
   };
   DBConf_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -157,6 +158,7 @@ void protobuf_ShutdownFile_pborm_5fconf_2eproto() {
   delete DBConf::_default_charset_;
   delete DBConf::_default_uname_;
   delete DBConf::_default_passwd_;
+  delete DBConf::_default_dbname_;
   delete ProcessConf::default_instance_;
   delete ProcessConf_reflection_;
   delete ProcessConf::_default_pidfile_;
@@ -182,20 +184,21 @@ void protobuf_AddDesc_pborm_5fconf_2eproto() {
     "file_pattern\030\003 \001(\t:\tpborm.logB\006\232\265\030\00232\022\034\n"
     "\010max_roll\030\004 \001(\r:\00220B\006\232\265\030\00232\022 \n\rmax_file_"
     "size\030\005 \001(\r:\t104857600\022\036\n\rmax_line_size\030\006"
-    " \001(\r:\0071024000\"\335\001\n\006DBConf\022\035\n\002ip\030\001 \001(\t:\t12"
+    " \001(\r:\0071024000\"\371\001\n\006DBConf\022\035\n\002ip\030\001 \001(\t:\t12"
     "7.0.0.1B\006\232\265\030\00232\022\022\n\004port\030\002 \001(\r:\0043306\022\026\n\004s"
     "ock\030\003 \001(\t:\000B\006\232\265\030\00264\022\024\n\treconnect\030\004 \001(\r:\001"
     "1\022\034\n\007charset\030\005 \001(\t:\004utf8B\005\232\265\030\0018\022\025\n\nautoc"
-    "ommit\030\006 \001(\r:\0011\022\035\n\005uname\030\007 \001(\t:\006gsgameB\006\232"
-    "\265\030\00216\022\036\n\006passwd\030\010 \001(\t:\006gsgameB\006\232\265\030\00216\"D\n"
-    "\013ProcessConf\022\"\n\007pidfile\030\001 \001(\t:\tpborm.pid"
-    "B\006\232\265\030\00232\022\021\n\006daemon\030\002 \001(\r:\0010\"\372\001\n\006Config\022\033"
-    "\n\003log\030\001 \001(\0132\016.pborm.LogConf\022\031\n\002db\030\002 \001(\0132"
-    "\r.pborm.DBConf\022#\n\007process\030\003 \001(\0132\022.pborm."
-    "ProcessConf\022\"\n\tmeta_path\030d \001(\t:\007./protoB"
-    "\006\232\265\030\00264\022\025\n\nthread_num\030e \001(\r:\0014\0221\n\006listen"
-    "\030f \001(\t:\031tcp://pull:127.0.0.1:8888B\006\232\265\030\0026"
-    "4\022%\n\tmeta_file\030g \001(\t:\ntest.protoB\006\232\265\030\00232", 840);
+    "ommit\030\006 \001(\r:\0011\022\033\n\005uname\030\007 \001(\t:\004testB\006\232\265\030"
+    "\00216\022\036\n\006passwd\030\010 \001(\t:\006123456B\006\232\265\030\00216\022\034\n\006d"
+    "bname\030\t \001(\t:\004testB\006\232\265\030\00232\"D\n\013ProcessConf"
+    "\022\"\n\007pidfile\030\001 \001(\t:\tpborm.pidB\006\232\265\030\00232\022\021\n\006"
+    "daemon\030\002 \001(\r:\0010\"\370\001\n\006Config\022\033\n\003log\030\001 \001(\0132"
+    "\016.pborm.LogConf\022\031\n\002db\030\002 \001(\0132\r.pborm.DBCo"
+    "nf\022#\n\007process\030\003 \001(\0132\022.pborm.ProcessConf\022"
+    "\"\n\tmeta_path\030d \001(\t:\007./protoB\006\232\265\030\00264\022\025\n\nt"
+    "hread_num\030e \001(\r:\0014\0221\n\006listen\030f \001(\t:\031tcp:"
+    "//pull:127.0.0.1:8888B\006\232\265\030\00264\022#\n\tmeta_fi"
+    "le\030g \001(\t:\010db.protoB\006\232\265\030\00232", 866);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pborm_conf.proto", &protobuf_RegisterTypes);
   LogConf::_default_path_ =
@@ -210,9 +213,11 @@ void protobuf_AddDesc_pborm_5fconf_2eproto() {
   DBConf::_default_charset_ =
       new ::std::string("utf8", 4);
   DBConf::_default_uname_ =
-      new ::std::string("gsgame", 6);
+      new ::std::string("test", 4);
   DBConf::_default_passwd_ =
-      new ::std::string("gsgame", 6);
+      new ::std::string("123456", 6);
+  DBConf::_default_dbname_ =
+      new ::std::string("test", 4);
   DBConf::default_instance_ = new DBConf();
   ProcessConf::_default_pidfile_ =
       new ::std::string("pborm.pid", 9);
@@ -222,7 +227,7 @@ void protobuf_AddDesc_pborm_5fconf_2eproto() {
   Config::_default_listen_ =
       new ::std::string("tcp://pull:127.0.0.1:8888", 25);
   Config::_default_meta_file_ =
-      new ::std::string("test.proto", 10);
+      new ::std::string("db.proto", 8);
   Config::default_instance_ = new Config();
   LogConf::default_instance_->InitAsDefaultInstance();
   DBConf::default_instance_->InitAsDefaultInstance();
@@ -727,6 +732,7 @@ void LogConf::Swap(LogConf* other) {
 ::std::string* DBConf::_default_charset_ = NULL;
 ::std::string* DBConf::_default_uname_ = NULL;
 ::std::string* DBConf::_default_passwd_ = NULL;
+::std::string* DBConf::_default_dbname_ = NULL;
 #ifndef _MSC_VER
 const int DBConf::kIpFieldNumber;
 const int DBConf::kPortFieldNumber;
@@ -736,6 +742,7 @@ const int DBConf::kCharsetFieldNumber;
 const int DBConf::kAutocommitFieldNumber;
 const int DBConf::kUnameFieldNumber;
 const int DBConf::kPasswdFieldNumber;
+const int DBConf::kDbnameFieldNumber;
 #endif  // !_MSC_VER
 
 DBConf::DBConf()
@@ -765,6 +772,7 @@ void DBConf::SharedCtor() {
   autocommit_ = 1u;
   uname_ = const_cast< ::std::string*>(_default_uname_);
   passwd_ = const_cast< ::std::string*>(_default_passwd_);
+  dbname_ = const_cast< ::std::string*>(_default_dbname_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -788,6 +796,9 @@ void DBConf::SharedDtor() {
   }
   if (passwd_ != _default_passwd_) {
     delete passwd_;
+  }
+  if (dbname_ != _default_dbname_) {
+    delete dbname_;
   }
   if (this != default_instance_) {
   }
@@ -843,6 +854,11 @@ void DBConf::Clear() {
       if (passwd_ != _default_passwd_) {
         passwd_->assign(*_default_passwd_);
       }
+    }
+  }
+  if (has_dbname()) {
+    if (dbname_ != _default_dbname_) {
+      dbname_->assign(*_default_dbname_);
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -954,7 +970,7 @@ bool DBConf::MergePartialFromCodedStream(
         break;
       }
 
-      // optional string uname = 7 [default = "gsgame"];
+      // optional string uname = 7 [default = "test"];
       case 7: {
         if (tag == 58) {
          parse_uname:
@@ -971,7 +987,7 @@ bool DBConf::MergePartialFromCodedStream(
         break;
       }
 
-      // optional string passwd = 8 [default = "gsgame"];
+      // optional string passwd = 8 [default = "123456"];
       case 8: {
         if (tag == 66) {
          parse_passwd:
@@ -981,6 +997,23 @@ bool DBConf::MergePartialFromCodedStream(
             this->passwd().data(), this->passwd().length(),
             ::google::protobuf::internal::WireFormat::PARSE,
             "passwd");
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(74)) goto parse_dbname;
+        break;
+      }
+
+      // optional string dbname = 9 [default = "test"];
+      case 9: {
+        if (tag == 74) {
+         parse_dbname:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_dbname()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+            this->dbname().data(), this->dbname().length(),
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "dbname");
         } else {
           goto handle_unusual;
         }
@@ -1058,7 +1091,7 @@ void DBConf::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(6, this->autocommit(), output);
   }
 
-  // optional string uname = 7 [default = "gsgame"];
+  // optional string uname = 7 [default = "test"];
   if (has_uname()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->uname().data(), this->uname().length(),
@@ -1068,7 +1101,7 @@ void DBConf::SerializeWithCachedSizes(
       7, this->uname(), output);
   }
 
-  // optional string passwd = 8 [default = "gsgame"];
+  // optional string passwd = 8 [default = "123456"];
   if (has_passwd()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->passwd().data(), this->passwd().length(),
@@ -1076,6 +1109,16 @@ void DBConf::SerializeWithCachedSizes(
       "passwd");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       8, this->passwd(), output);
+  }
+
+  // optional string dbname = 9 [default = "test"];
+  if (has_dbname()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->dbname().data(), this->dbname().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "dbname");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      9, this->dbname(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -1136,7 +1179,7 @@ void DBConf::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(6, this->autocommit(), target);
   }
 
-  // optional string uname = 7 [default = "gsgame"];
+  // optional string uname = 7 [default = "test"];
   if (has_uname()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->uname().data(), this->uname().length(),
@@ -1147,7 +1190,7 @@ void DBConf::SerializeWithCachedSizes(
         7, this->uname(), target);
   }
 
-  // optional string passwd = 8 [default = "gsgame"];
+  // optional string passwd = 8 [default = "123456"];
   if (has_passwd()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->passwd().data(), this->passwd().length(),
@@ -1156,6 +1199,17 @@ void DBConf::SerializeWithCachedSizes(
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         8, this->passwd(), target);
+  }
+
+  // optional string dbname = 9 [default = "test"];
+  if (has_dbname()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->dbname().data(), this->dbname().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "dbname");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        9, this->dbname(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -1212,18 +1266,27 @@ int DBConf::ByteSize() const {
           this->autocommit());
     }
 
-    // optional string uname = 7 [default = "gsgame"];
+    // optional string uname = 7 [default = "test"];
     if (has_uname()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->uname());
     }
 
-    // optional string passwd = 8 [default = "gsgame"];
+    // optional string passwd = 8 [default = "123456"];
     if (has_passwd()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->passwd());
+    }
+
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional string dbname = 9 [default = "test"];
+    if (has_dbname()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->dbname());
     }
 
   }
@@ -1278,6 +1341,11 @@ void DBConf::MergeFrom(const DBConf& from) {
       set_passwd(from.passwd());
     }
   }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_dbname()) {
+      set_dbname(from.dbname());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -1308,6 +1376,7 @@ void DBConf::Swap(DBConf* other) {
     std::swap(autocommit_, other->autocommit_);
     std::swap(uname_, other->uname_);
     std::swap(passwd_, other->passwd_);
+    std::swap(dbname_, other->dbname_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -1827,7 +1896,7 @@ bool Config::MergePartialFromCodedStream(
         break;
       }
 
-      // optional string meta_file = 103 [default = "test.proto"];
+      // optional string meta_file = 103 [default = "db.proto"];
       case 103: {
         if (tag == 826) {
          parse_meta_file:
@@ -1912,7 +1981,7 @@ void Config::SerializeWithCachedSizes(
       102, this->listen(), output);
   }
 
-  // optional string meta_file = 103 [default = "test.proto"];
+  // optional string meta_file = 103 [default = "db.proto"];
   if (has_meta_file()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->meta_file().data(), this->meta_file().length(),
@@ -1980,7 +2049,7 @@ void Config::SerializeWithCachedSizes(
         102, this->listen(), target);
   }
 
-  // optional string meta_file = 103 [default = "test.proto"];
+  // optional string meta_file = 103 [default = "db.proto"];
   if (has_meta_file()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
       this->meta_file().data(), this->meta_file().length(),
@@ -2045,7 +2114,7 @@ int Config::ByteSize() const {
           this->listen());
     }
 
-    // optional string meta_file = 103 [default = "test.proto"];
+    // optional string meta_file = 103 [default = "db.proto"];
     if (has_meta_file()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(

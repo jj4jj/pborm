@@ -240,6 +240,7 @@ main(int argc, char ** argv){
     mconf.passwd = config.db.passwd.data;    
     mconf.ip = config.db.ip.data;
     mconf.port = config.db.port;
+	mconf.dbname = config.db.dbname.data;
     if (mcp.init(mconf)){
         GLOG_ERR("mysql client create error !");
         return -1;
@@ -247,7 +248,7 @@ main(int argc, char ** argv){
 
     MySQLMsgCvt	msc(config.meta_file.data, (st_mysql*)mcp.mysqlhandle());
     const char * paths[] = {config.meta_path.data};
-    ret = msc.InitMeta(1, paths);
+    ret = msc.InitMeta(1, (const char **)paths);
     if (ret){
         cerr << "init schama error ! ret:" << ret << endl;
         return -11;
@@ -256,6 +257,7 @@ main(int argc, char ** argv){
 
     dcnode_config_t dconf;
     dconf.addr = dcnode_addr_t(config.listen.data);
+	dconf.name = "pborm";
     dcnode_t * dc = dcnode_create(dconf);
     if (!dc){
         GLOG_ERR("dcnode create error !");

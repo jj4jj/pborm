@@ -17,8 +17,9 @@ message DBConf {
 	optional	uint32		reconnect = 4[default=1];
 	optional	string		charset = 5[(f_length)="8",default="utf8"];
 	optional	uint32		autocommit = 6[default=1];
-	optional	string		uname = 7[(f_length)="16",default="gsgame"];
-	optional	string		passwd = 8[(f_length)="16",default="gsgame"];
+	optional	string		uname = 7[(f_length)="16",default="test"];
+	optional	string		passwd = 8[(f_length)="16",default="123456"];
+	optional	string		dbname = 9[(f_length)="32",default="test"];
 }
 
 message ProcessConf {
@@ -34,5 +35,5 @@ message Config {
 	optional	string		meta_path = 100[(f_length)="64",default="./proto"];
 	optional	uint32		thread_num = 101[default=4];
 	optional	string		listen = 102[(f_length)="64",default="tcp://pull:127.0.0.1:8888"];
-	optional	string		meta_file = 103[(f_length)="32",default="test.proto"];
+	optional	string		meta_file = 103[(f_length)="32",default="db.proto"];
 }

@@ -1,4 +1,4 @@
-
+#!/bin/bash
 if [[ ! -d 3rd/hpbex ]];then
     cd 3rd && git clone  https://github.com/jj4jj/hpbex.git
 fi
