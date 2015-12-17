@@ -190,7 +190,10 @@ main(int argc, char ** argv){
         return 0;
     }
     if (cmdline.hasopt("g")){
-        const pborm::Config &  conf = pborm::Config::default_instance();
+        const pborm::Config &  def_conf = pborm::Config::default_instance();
+        pborm::Config conf = def_conf;
+        conf.add_meta_files("db.proto");
+        conf.add_meta_files("comm.proto");
         dcsutil::protobuf_saveto_xml(conf, "pborm.default.xml");
         return 0;
     }
@@ -246,9 +249,16 @@ main(int argc, char ** argv){
         return -1;
     }
 
-    MySQLMsgCvt	msc(config.meta_file.data, (st_mysql*)mcp.mysqlhandle());
-    const char * paths[] = {config.meta_path.data};
-    ret = msc.InitMeta(1, (const char **)paths);
+    const char * otherfiles[16];
+    int notherfiles = 0;
+    for (notherfiles = 0; notherfiles < config.meta_files.count; ++notherfiles){
+        otherfiles[notherfiles] = config.meta_files.list[notherfiles].data;
+    }
+
+    const char * paths[] = { config.meta_path.data };
+    //main file
+    MySQLMsgCvt	msc(config.meta_files.list[0].data, (st_mysql*)mcp.mysqlhandle());
+    ret = msc.InitMeta(1, (const char **)paths, notherfiles - 1, (const char **)(otherfiles + 1));
     if (ret){
         cerr << "init schama error ! ret:" << ret << endl;
         return -11;
