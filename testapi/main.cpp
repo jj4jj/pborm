@@ -31,8 +31,8 @@ int main(int argc, char ** argv){
 	cmdline_opt_t	cmdline(argc, argv);
 	cmdline.parse("pborm:r::pborm server address:tcp://127.0.0.1:8888;"
 					"init:n:i:init the db test env;"
-					"user:r:u:mysql user name:test;"
-					"passwd:r:p:mysql password:123456");
+					"user:r:u:mysql user name:gsgame;"
+					"passwd:r:p:mysql password:gsgame");
 
 	//msg meta
 	DBTest		obj;
