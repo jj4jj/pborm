@@ -112,6 +112,7 @@ orm_msg_dispatcher(void * ud, const char * src, const msg_buffer_t & msg){
         GLOG_ERR("unpack msg error !");
         return -1;
     }
+	GLOG_TRA("recvef from client :%s msg:%s", src, orm_msg.Debug());
     Message * newmsg = nullptr;
     int ret = -1;
     mysqlclient_pool_t::command_t   cmd;
@@ -141,6 +142,7 @@ orm_msg_dispatcher(void * ud, const char * src, const msg_buffer_t & msg){
         }
         ///////////////////////////////////////////////////////////////////////
         bool flatmode = false;
+		g_ctx.mysql->mysql(0)->lock();
         switch (orm_msg.op()){
         case ORM_COMMAND:
             break;
@@ -160,6 +162,7 @@ orm_msg_dispatcher(void * ud, const char * src, const msg_buffer_t & msg){
             //msgen.Count(cmd.sql)
             break;
         }
+		g_ctx.mysql->mysql(0)->unlock();
         if (ret){
             GLOG_ERR("generate sql error !");
             return -5;
@@ -257,7 +260,9 @@ main(int argc, char ** argv){
 
     const char * paths[] = { config.meta_path.data };
     //main file
-    MySQLMsgCvt	msc(config.meta_files.list[0].data, (st_mysql*)mcp.mysqlhandle());
+	st_mysql * mysql = (st_mysql*)mcp.mysql(0)->mysql_handle();
+	GLOG_TRA("get mysql :%p", mysql);
+    MySQLMsgCvt	msc(config.meta_files.list[0].data, mysql);
     ret = msc.InitMeta(1, (const char **)paths, notherfiles - 1, (const char **)(otherfiles + 1));
     if (ret){
         cerr << "init schama error ! ret:" << ret << endl;

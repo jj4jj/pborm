@@ -81,10 +81,11 @@ _pborm_command(const google::protobuf::Message & msg, const char * cb_data, int 
     orm_msg.set_msg_full_type_name(msg.GetDescriptor()->full_name());
     orm_msg.set_op(op);
     orm_msg.mutable_req()->set_msg_data(g_ctx.msg_buffer.buffer, g_ctx.msg_buffer.valid_size);
-    if (!orm_msg.Pack(g_ctx.msg_buffer)){
-        GLOG_ERR("orm pack msg error !");
+	if (!orm_msg.Pack(g_ctx.msg_buffer)){
+        GLOG_ERR("orm pack msg:%s error !", orm_msg.Debug());
         return -2;
     }
+	GLOG_TRA("send msg to pborm :%s", orm_msg.Debug());
     return dcnode_send(g_ctx.dc, "pborm", g_ctx.msg_buffer.buffer, g_ctx.msg_buffer.valid_size);
 }
 
