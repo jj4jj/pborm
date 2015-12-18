@@ -64,7 +64,6 @@ int main(int argc, char ** argv){
 			return -1;
 		}
 
-		MySQLMsgMeta hellogen(&msc);
 		///////////////////////////////////////////////////////////////////////
 		string sql;
 		msc.CreateDB("test", sql);
@@ -72,6 +71,28 @@ int main(int argc, char ** argv){
 
 		msc.CreateTables(obj.GetDescriptor()->name().c_str(), sql);
 		mysql.execute(sql);
+
+
+        DBTest dtest;
+        dtest.set_seq(466634);
+        dtest.set_role_id(245246);
+        dtest.mutable_base()->set_id(246);
+        
+        MySQLMsgMeta    msm(&msc);
+        msm.AttachMsg(&dtest);
+        msm.Select(sql);
+        cout << "select sql:" << sql << endl;
+
+        msm.Insert(sql);
+        cout << "insert sql" << sql << endl;
+
+        msm.Update(sql);
+        cout << "update sql:" << sql << endl;
+
+        msm.Delete(sql);
+        cout << "delete sql:" << sql << endl;
+        
+
 
 		cout << "init test db env ok !";
 		return 0;

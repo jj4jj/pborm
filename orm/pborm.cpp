@@ -100,6 +100,7 @@ orm_msg_fetch_result(void *, const mysqlclient_pool_t::result_t & result,
             }
         }
     }
+    GLOG_TRA("msg result :%s", msg.Debug());
     if (!msg.Pack(g_ctx.msgbuff)){
         GLOG_ERR("msg pack error ! type:%s msg:%s buffer size:%d",
             cmd.full_msg_type_name.c_str(), msg.Debug(), g_ctx.msgbuff.max_size);
@@ -159,10 +160,10 @@ orm_msg_dispatcher(void * ud, const char * src, const msg_buffer_t & msg){
             ret = msgen.Delete(cmd.sql, nullptr, flatmode);
             break;
         case ORM_SELECT:
-            msgen.Select(cmd.sql, nullptr, nullptr, flatmode);
+            ret = msgen.Select(cmd.sql, nullptr, nullptr, flatmode);
             break;
         case ORM_UPDATE:
-            msgen.Update(cmd.sql, flatmode);
+            ret = msgen.Update(cmd.sql, flatmode);
             break;
         case ORM_COUNT:
             //msgen.Count(cmd.sql)
