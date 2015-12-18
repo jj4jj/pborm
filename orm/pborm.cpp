@@ -20,12 +20,17 @@ using namespace pborm;
 using namespace google::protobuf;
 using namespace std;
 
+
+#define MAX_MSG_BUFF_SIZE   (1024*1024*2)
 static struct {
     dcnode_t            * dc;
     mysqlclient_pool_t  * mysql;
     MySQLMsgCvt         * converter;
     msg_buffer_t          msgbuff;
 } g_ctx;
+
+
+
 
 static int 
 response_error_msg(int ret, const mysqlclient_pool_t::command_t & cmd){
@@ -47,7 +52,7 @@ response_error_msg(int ret, const mysqlclient_pool_t::command_t & cmd){
 
 static void
 orm_msg_fetch_result(void *, const mysqlclient_pool_t::result_t & result,
-const mysqlclient_pool_t::command_t & cmd){
+                    const mysqlclient_pool_t::command_t & cmd){
     pborm_msg_t msg;
     msg.set_op((OrmMsgOP)cmd.opaque);
     if (cmd.cbdata.valid_size > 0){
@@ -96,7 +101,9 @@ const mysqlclient_pool_t::command_t & cmd){
         }
     }
     if (!msg.Pack(g_ctx.msgbuff)){
-        GLOG_ERR("msg pack error ! msg:%s", cmd.full_msg_type_name.c_str());
+        GLOG_ERR("msg pack error ! type:%s msg:%s buffer size:%d",
+            cmd.full_msg_type_name.c_str(), msg.Debug(), g_ctx.msgbuff.max_size);
+        return;
     }
     ret = dcnode_send(g_ctx.dc, cmd.src.c_str(), g_ctx.msgbuff.buffer, g_ctx.msgbuff.valid_size);
     if (ret){
@@ -142,7 +149,6 @@ orm_msg_dispatcher(void * ud, const char * src, const msg_buffer_t & msg){
         }
         ///////////////////////////////////////////////////////////////////////
         bool flatmode = false;
-		g_ctx.mysql->mysql(0)->lock();
         switch (orm_msg.op()){
         case ORM_COMMAND:
             break;
@@ -162,7 +168,6 @@ orm_msg_dispatcher(void * ud, const char * src, const msg_buffer_t & msg){
             //msgen.Count(cmd.sql)
             break;
         }
-		g_ctx.mysql->mysql(0)->unlock();
         if (ret){
             GLOG_ERR("generate sql error !");
             return -5;
@@ -197,7 +202,9 @@ main(int argc, char ** argv){
         pborm::Config conf = def_conf;
         conf.add_meta_files("db.proto");
         conf.add_meta_files("comm.proto");
-        dcsutil::protobuf_saveto_xml(conf, "pborm.default.xml");
+        const char * default_config_file = "pborm.default.xml";
+        dcsutil::protobuf_saveto_xml(conf, default_config_file);
+        cout << "generate default config file :" << default_config_file << endl;
         return 0;
     }
     const char * confile = cmdline.getoptstr("config");
@@ -222,7 +229,6 @@ main(int argc, char ** argv){
         GLOG_ERR("lock pid file error !");
         return -10;
     }
-
     logger_config_t logconf;
     logconf.dir = config.log.path.data;
     logconf.pattern = config.log.file_pattern.data;
@@ -238,6 +244,8 @@ main(int argc, char ** argv){
         daemonlize();
     }
     
+    g_ctx.msgbuff.create(MAX_MSG_BUFF_SIZE);
+
     //->dcnode
     //->mysql
     mysqlclient_pool_t  mcp;
@@ -247,9 +255,15 @@ main(int argc, char ** argv){
     mconf.ip = config.db.ip.data;
     mconf.port = config.db.port;
 	mconf.dbname = config.db.dbname.data;
-    if (mcp.init(mconf)){
-        GLOG_ERR("mysql client create error !");
+    if (mcp.init(mconf, config.thread_num, 10)){
+        GLOG_ERR("mysql client create error handle:%p !", mcp.mysqlhandle());
         return -1;
+    }
+    mysqlclient_t main_client;
+    ret = main_client.init(mconf);
+    if (ret){
+        GLOG_ERR("mysql client init error :%d error info:%s", ret, main_client.err_msg());
+        return  -2;
     }
 
     const char * otherfiles[16];
@@ -260,9 +274,7 @@ main(int argc, char ** argv){
 
     const char * paths[] = { config.meta_path.data };
     //main file
-	st_mysql * mysql = (st_mysql*)mcp.mysql(0)->mysql_handle();
-	GLOG_TRA("get mysql :%p", mysql);
-    MySQLMsgCvt	msc(config.meta_files.list[0].data, mysql);
+    MySQLMsgCvt	msc(config.meta_files.list[0].data, main_client.mysql_handle());
     ret = msc.InitMeta(1, (const char **)paths, notherfiles - 1, (const char **)(otherfiles + 1));
     if (ret){
         cerr << "init schama error ! ret:" << ret << endl;
@@ -287,6 +299,7 @@ main(int argc, char ** argv){
     while (true){
         dcnode_update(dc, 5000);//5ms
         mcp.poll();
+        main_client.ping();
     }
     return 0;
 }
