@@ -5,12 +5,13 @@ namespace google {
     }
 }
 enum        pborm_op_type {
-    PBORM_UPDATE,
-    PBORM_DELETE,
-    PBORM_INSERT,
-    PBORM_GET,
-    PBORM_BATCH_GET,
-    PBORM_COUNT
+	PBORM_CMD = 0,
+    PBORM_UPDATE = 1,
+    PBORM_DELETE = 2,
+    PBORM_INSERT = 3,
+    PBORM_GET = 4,
+    PBORM_BATCH_GET = 5,
+    PBORM_COUNT = 6
 };
 struct pborm_result_t {
     pborm_op_type   op;
