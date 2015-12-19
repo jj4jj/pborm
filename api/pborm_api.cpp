@@ -102,22 +102,32 @@ pborm_insert(const google::protobuf::Message & msg, const char * cb_data , int c
     return _pborm_command(msg, cb_data, cb_size, pborm::ORM_INSERT);
 }
 int
-pborm_get(const google::protobuf::Message & msg, const char * cb_data, int cb_size){
+pborm_get(const google::protobuf::Message & msg, const char * fields, const char * cb_data, int cb_size){
     pborm::OrmMsgReq   req;
     auto select = req.mutable_select();
     select->set_limit(1);
+	if (fields && *fields){
+		select->set_fields(fields);
+	}
     return _pborm_command(msg, cb_data, cb_size, pborm::ORM_SELECT, &req);
 }
 int
-pborm_batch_get(const google::protobuf::Message & msg, const char * where_, int offset, int limit, int order, const char * cb_data , int cb_size){
+pborm_batch_get(const google::protobuf::Message & msg, const char * fields, const char * where_, int offset, int limit,
+				const char * orderby, int order, const char * cb_data, int cb_size){
     pborm::OrmMsgReq   req;
     auto select = req.mutable_select();
-    if (where_){
+    if (where_ && *where_){
         select->set_where(where_);
     }
+	if (fields && *fields){
+		select->set_fields(fields);
+	}
     select->set_offset(offset);
     select->set_limit(limit);
     select->set_order(order);
+	if (orderby && *orderby){
+		select->set_orderby(orderby);
+	}
     return _pborm_command(msg, cb_data, cb_size, pborm::ORM_SELECT, &req);
 }
 int

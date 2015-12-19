@@ -31,8 +31,10 @@ void        pborm_set_cb(pborm_cb_t cb, void *ud);
 int         pborm_update(const google::protobuf::Message & msg, const char * cb_data = 0, int cb_size = 0);
 int         pborm_delete(const google::protobuf::Message & msg, const char * cb_data = 0, int cb_size = 0);
 int         pborm_insert(const google::protobuf::Message & msg, const char * cb_data = 0, int cb_size = 0);
-int         pborm_get(const google::protobuf::Message & msg, const char * cb_data = 0, int cb_size = 0);
-int         pborm_batch_get(const google::protobuf::Message & msg, const char * where_ = nullptr, int offset = 0, int limit = 0 , int order = 0, const char * cb_data = 0, int cb_size = 0);
+int         pborm_get(const google::protobuf::Message & msg, const char * fields = nullptr, const char * cb_data = 0, int cb_size = 0);
+int         pborm_batch_get(const google::protobuf::Message & msg,const char * fields = nullptr,
+			const char * where_ = nullptr, int offset = 0, int limit = 0 ,
+			const char * orderby = nullptr, int order = 0, const char * cb_data = 0, int cb_size = 0);
 int         pborm_count(const google::protobuf::Message & msg, const char * cb_data = 0, int cb_size = 0);
 
 

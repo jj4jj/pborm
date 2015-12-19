@@ -17,6 +17,7 @@ message OrmMsgReqSelect {
     optional    int32       limit = 3;
     optional    string      fields = 4;
     optional    int32       order = 5; //0:nothing todo , -1: asc, 1:desc
+	optional	string		orderby = 6;
 }
 
 message OrmMsgRspSelect {

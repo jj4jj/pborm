@@ -30,8 +30,6 @@ static struct {
 } g_ctx;
 
 
-
-
 static int 
 response_error_msg(int ret, const mysqlclient_pool_t::command_t & cmd){
     pborm_msg_t ormmsg;
@@ -68,7 +66,7 @@ orm_msg_fetch_result(void *, const mysqlclient_pool_t::result_t & result,
     }
     else {
         rsp->set_count(result.affects);
-        if (cmd.need_result){
+        if (cmd.need_result && cmd.opaque == ORM_SELECT){
             OrmMsgRspSelect * select = rsp->mutable_select();
             select->set_total(result.fetched_results.size());
             auto msg_desc = g_ctx.converter->GetProtoMeta().GetMsgDesc(cmd.full_msg_type_name.c_str());
@@ -128,6 +126,7 @@ orm_msg_dispatcher(void * ud, const char * src, const msg_buffer_t & msg){
     cmd.opaque = orm_msg.op();
     cmd.full_msg_type_name = orm_msg.msg_full_type_name();
     cmd.src = src;
+	cmd.need_result = false;
     ////////////////////////////////////////////////////////////////////////////
     do {
         newmsg = g_ctx.converter->GetProtoMeta().NewDynMessage(orm_msg.msg_full_type_name().c_str(),
@@ -152,6 +151,7 @@ orm_msg_dispatcher(void * ud, const char * src, const msg_buffer_t & msg){
         bool flatmode = false;
         switch (orm_msg.op()){
         case ORM_COMMAND:
+			ret = 0;
             break;
         case ORM_INSERT:
             ret = msgen.Insert(cmd.sql);
@@ -160,13 +160,25 @@ orm_msg_dispatcher(void * ud, const char * src, const msg_buffer_t & msg){
             ret = msgen.Delete(cmd.sql, nullptr, flatmode);
             break;
         case ORM_SELECT:
-            ret = msgen.Select(cmd.sql, nullptr, nullptr, flatmode);
+			do {
+				cmd.need_result = true;
+				std::vector<string>		fieldsv;
+				strsplit(orm_msg.req().select().fields(), ",", fieldsv);
+				ret = msgen.Select(cmd.sql, &fieldsv,
+					orm_msg.req().select().where().c_str(),
+					orm_msg.req().select().offset(),
+					orm_msg.req().select().limit(),
+					orm_msg.req().select().orderby().c_str(),
+					orm_msg.req().select().order(),
+					flatmode);
+			} while (false);
             break;
         case ORM_UPDATE:
             ret = msgen.Update(cmd.sql, flatmode);
             break;
         case ORM_COUNT:
-            //msgen.Count(cmd.sql)
+			cmd.need_result = true;
+			ret = msgen.Count(cmd.sql, orm_msg.req().select().where().c_str());
             break;
         }
         if (ret){

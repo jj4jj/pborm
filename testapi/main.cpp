@@ -118,12 +118,12 @@ int main(int argc, char ** argv){
 			ret = pborm_insert(obj, "hello,world", 11);
 			break;
 		case 1:
-			ret = pborm_delete(obj, "hello,world", 11);
+			ret = 0;//pborm_delete(obj, "hello,world", 11);
 			break;
 		case 2:
 			sto.seq = 267;
 			sto.convto(obj);
-			ret = pborm_get(obj, "hello,world", 11);
+			ret = pborm_get(obj, nullptr, "hello,world", 11);
 			break;
 		case 3:
 			sto.seq = 577;
@@ -133,7 +133,12 @@ int main(int argc, char ** argv){
 		case 4:
 			sto.seq = 55;
 			sto.convto(obj);
-			ret = pborm_batch_get(obj, "1", 0, 10, 1, "hello,world", 11);
+			ret = pborm_batch_get(obj,nullptr, "1", 0, 10, nullptr, 1, "hello,world", 11);
+			break;
+		case 5:
+			sto.seq = 32;
+			sto.convto(obj);
+			ret = pborm_count(obj);
 			break;
 		}
 		if (ret == 0){
