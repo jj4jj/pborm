@@ -13,13 +13,65 @@ static struct pborm_ctx_t {
 }  g_ctx ;
 
 static int 
-_dispather(void * , const char * src, const msg_buffer_t & msg){
-    GLOG_TRA("receive orm(%s) msg size:%d", src, msg.valid_size);
-    pborm_msg_t   ormmsg;
-    if (!ormmsg.Unpack(msg)){
-        GLOG_ERR("unpack receive msg error !");
-        return -1;
-    }
+_dispather(void *, const char * src, const msg_buffer_t & msg){
+	pborm_msg_t   ormmsg;
+	if (!ormmsg.Unpack(msg)){
+		GLOG_ERR("unpack receive msg error !");
+		return -1;
+	}
+	GLOG_TRA("recv orm msg:%s", ormmsg.Debug());
+	pborm_result_t result;
+	memset(&result, 0, sizeof(result));
+	result.cb_data = ormmsg.cb().data().data();
+	result.cb_size = ormmsg.cb().data().length();
+	result.count = ormmsg.rsp().count();
+	result.msg_type_name = ormmsg.msg_full_type_name().c_str();
+	result.ret = ormmsg.rsp().err_no();
+	if (result.ret == 0){
+		switch (ormmsg.op()){
+		case pborm::ORM_SELECT:
+			assert(result.count == ormmsg.rsp().select().msgs_size());
+			result.offset = ormmsg.rsp().select().head().offset();
+			result.limit = ormmsg.rsp().select().head().limit();
+			if (result.limit == 1){
+				result.op = PBORM_GET;
+			}
+			else {
+				result.op = PBORM_BATCH_GET;
+			}
+			//-----------------------------------------------------------------------------
+			result.msgs = new pborm_result_t::msg_buff_t[ormmsg.rsp().select().msgs_size()];
+			if (!result.msgs){
+				GLOG_FTL("allocate msg error size:%zu", sizeof(pborm_result_t::msg_buff_t)*ormmsg.rsp().select().msgs_size());
+				break;
+			}
+			for (int i = 0; i < ormmsg.rsp().select().msgs_size(); ++i){
+				result.msgs[i].data = ormmsg.rsp().select().msgs(i).data();
+				result.msgs[i].size = ormmsg.rsp().select().msgs(i).length();
+			}
+			break;
+		case pborm::ORM_UPDATE:
+			result.op = PBORM_UPDATE;
+			break;
+		case pborm::ORM_COUNT:
+			result.op = PBORM_COUNT;
+			break;
+		case pborm::ORM_INSERT:
+			result.op = PBORM_INSERT;
+			break;
+		case pborm::ORM_DELETE:
+			result.op = PBORM_DELETE;
+			break;
+		}
+	}
+	else {
+		result.result_msg = ormmsg.rsp().err_msg().c_str();
+	}
+	g_ctx.cb(g_ctx.cb_ud, result);
+	//////////////////////////////////////////////
+	if (result.msgs){
+		delete result.msgs;
+	}
     return 0;
 }
 int         
@@ -105,7 +157,7 @@ int
 pborm_get(const google::protobuf::Message & msg, const char * fields, const char * cb_data, int cb_size){
     pborm::OrmMsgReq   req;
     auto select = req.mutable_select();
-    select->set_limit(1);
+    select->mutable_head()->set_limit(1);
 	if (fields && *fields){
 		select->set_fields(fields);
 	}
@@ -122,8 +174,8 @@ pborm_batch_get(const google::protobuf::Message & msg, const char * fields, cons
 	if (fields && *fields){
 		select->set_fields(fields);
 	}
-    select->set_offset(offset);
-    select->set_limit(limit);
+    select->mutable_head()->set_offset(offset);
+	select->mutable_head()->set_limit(limit);
     select->set_order(order);
 	if (orderby && *orderby){
 		select->set_orderby(orderby);

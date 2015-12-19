@@ -15,11 +15,21 @@ enum        pborm_op_type {
 struct pborm_result_t {
     pborm_op_type   op;
     int             ret;
-    int             total;
+	//////////////////////
+	//COMMON - UPDATE / SELECT / DELETE / COUNT / INSERT
+	const	char    * msg_type_name;
+	int              count;
+	//SELECT
     int             offset;
-    int             count;
+	int				limit;
+	//SELECT MSG (COUNT)
     struct msg_buff_t {const char * data; int size;} * msgs;
-    const char *    cb_data;
+	//
+	const	char	* result_msg; //result msg for custom command or error
+
+	////////////////////////
+    //CALL BACK
+	const char *    cb_data;
     int             cb_size;
 };
 

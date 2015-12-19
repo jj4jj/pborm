@@ -19,7 +19,8 @@ using namespace dcsutil;
 
 static void 
 receive_result(void *ud, const pborm_result_t & result){
-	GLOG_TRA("receive msg ");
+	GLOG_TRA("receive msg result cb data:%s cb size:%d",
+		result.cb_data, result.cb_size);
 }
 
 int main(int argc, char ** argv){

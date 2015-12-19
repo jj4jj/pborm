@@ -43,10 +43,56 @@ response_error_msg(int ret, const mysqlclient_pool_t::command_t & cmd){
     rsp->set_err_msg("general error !");
     if (!ormmsg.Pack(g_ctx.msgbuff)){
         GLOG_ERR("msg pack error ! msg:%s", cmd.full_msg_type_name.c_str());
+		return -1;
     }
     return dcnode_send(g_ctx.dc, cmd.src.c_str(), g_ctx.msgbuff.buffer, g_ctx.msgbuff.valid_size);
 }
 
+static inline void
+_convert_orm_count_result(OrmMsgRsp * rsp,const mysqlclient_pool_t::result_t & result){
+	if (!result.fetched_results.empty() && result.fetched_results[0][0].first == "COUNT(*)"){
+		rsp->set_count(strtol(result.fetched_results[0][0].second.buffer, NULL, 10));
+	}
+	else {
+		GLOG_ERR("select count(*) error result ! results.size(:%zu) field:%s",
+			result.fetched_results.size(),	
+			result.fetched_results[0][0].first.c_str());
+		rsp->set_err_no(-1);
+		rsp->set_err_msg("select count error result converting!");
+	}
+}
+
+static inline void
+_convert_orm_select_result(OrmMsgRsp * rsp,
+	const mysqlclient_pool_t::result_t & result,const mysqlclient_pool_t::command_t & cmd){
+	rsp->set_count(result.fetched_results.size());
+	OrmMsgRspSelect * select = rsp->mutable_select();
+	select->mutable_head()->set_offset(cmd.offset);
+	select->mutable_head()->set_limit(cmd.limit);
+	MySQLRow sqlrow;
+	mysqlclient_t::table_row_t tbrow;
+	for (size_t i = 0; i < result.fetched_results.size(); ++i){
+		result.alloc_mysql_row_converted(tbrow, i);
+		sqlrow.fields_name = tbrow.fields_name;
+		sqlrow.num_fields = tbrow.fields_count;
+		sqlrow.row_data = tbrow.row_data;
+		sqlrow.row_lengths = tbrow.row_length;
+
+		g_ctx.msgbuff.valid_size = g_ctx.msgbuff.max_size;
+		int ret = g_ctx.converter->GetMsgBufferFromSQLRow(
+			cmd.full_msg_type_name.c_str(),
+			g_ctx.msgbuff.buffer,
+			&g_ctx.msgbuff.valid_size, sqlrow, cmd.flatmode);
+		result.free_mysql_row(tbrow);
+		if (ret){
+			GLOG_ERR("convert get msg :%s error !", cmd.full_msg_type_name.c_str());
+			rsp->set_err_no(-110);
+			rsp->set_err_msg("get msg buffer from sql row error !");
+			return;
+		}
+		select->add_msgs(g_ctx.msgbuff.buffer, g_ctx.msgbuff.valid_size);
+	}
+}
 
 static void
 orm_msg_fetch_result(void *, const mysqlclient_pool_t::result_t & result,
@@ -59,46 +105,28 @@ orm_msg_fetch_result(void *, const mysqlclient_pool_t::result_t & result,
     msg.set_msg_full_type_name(cmd.full_msg_type_name);
     auto rsp = msg.mutable_rsp();
     int ret = 0;
-    rsp->set_err_no(ret);
-    if (result.status){
+	rsp->set_err_no(ret);
+	auto msg_desc = g_ctx.converter->GetProtoMeta().GetMsgDesc(cmd.full_msg_type_name.c_str());
+	if (!msg_desc){ //error msg
+		rsp->set_err_no(-1);
+		rsp->set_err_msg("not found the msg desc in meta !");
+	}	
+    else if (result.status){
         rsp->set_err_no(result.err_no);
         rsp->set_err_msg(result.error);
+		GLOG_ERR("result stats :%d error:%d error msg:%s", result.status,
+			result.err_no, result.error.c_str());
     }
     else {
         rsp->set_count(result.affects);
-        if (cmd.need_result && cmd.opaque == ORM_SELECT){
-            OrmMsgRspSelect * select = rsp->mutable_select();
-            select->set_total(result.fetched_results.size());
-            auto msg_desc = g_ctx.converter->GetProtoMeta().GetMsgDesc(cmd.full_msg_type_name.c_str());
-            if (!msg_desc){
-                rsp->set_err_no(-1);
-                rsp->set_err_msg("not found the msg desc !");
-            }
-            MySQLRow sqlrow;
-            mysqlclient_t::table_row_t tbrow;
-            sqlrow.table_name = msg_desc->name().c_str();
-            for (size_t i = 0; i < result.fetched_results.size(); ++i){
-                result.alloc_mysql_row_converted(tbrow, i);
-                sqlrow.fields_name = tbrow.fields_name;
-                sqlrow.num_fields = tbrow.fields_count;
-                sqlrow.row_data = tbrow.row_data;
-                sqlrow.row_lengths = tbrow.row_length;
-
-                g_ctx.msgbuff.valid_size = g_ctx.msgbuff.max_size;
-                ret = g_ctx.converter->GetMsgBufferFromSQLRow(g_ctx.msgbuff.buffer,
-                    &g_ctx.msgbuff.valid_size, sqlrow, cmd.flatmode);
-                result.free_mysql_row(tbrow);
-                if (ret){
-                    GLOG_ERR("convert get msg :%s error !", cmd.full_msg_type_name.c_str());
-                    rsp->set_err_no(-1);
-                    rsp->set_err_msg("get msg buffer from sql row error !");
-                    break;
-                }
-                select->add_msgs(g_ctx.msgbuff.buffer, g_ctx.msgbuff.valid_size);
-            }
+        if (cmd.opaque == ORM_SELECT){
+			_convert_orm_select_result(rsp, result, cmd);
         }
+		else if (cmd.opaque == ORM_COUNT){
+			_convert_orm_count_result(rsp, result);
+		}
     }
-    GLOG_TRA("msg result :%s", msg.Debug());
+    GLOG_TRA("send msg result to api client:%s", msg.Debug());
     if (!msg.Pack(g_ctx.msgbuff)){
         GLOG_ERR("msg pack error ! type:%s msg:%s buffer size:%d",
             cmd.full_msg_type_name.c_str(), msg.Debug(), g_ctx.msgbuff.max_size);
@@ -164,10 +192,11 @@ orm_msg_dispatcher(void * ud, const char * src, const msg_buffer_t & msg){
 				cmd.need_result = true;
 				std::vector<string>		fieldsv;
 				strsplit(orm_msg.req().select().fields(), ",", fieldsv);
+				cmd.offset = orm_msg.req().select().head().offset();
+				cmd.limit = orm_msg.req().select().head().limit();
 				ret = msgen.Select(cmd.sql, &fieldsv,
 					orm_msg.req().select().where().c_str(),
-					orm_msg.req().select().offset(),
-					orm_msg.req().select().limit(),
+					cmd.offset, cmd.limit,
 					orm_msg.req().select().orderby().c_str(),
 					orm_msg.req().select().order(),
 					flatmode);
@@ -268,8 +297,7 @@ main(int argc, char ** argv){
     mconf.ip = config.db.ip.data;
     mconf.port = config.db.port;
 	mconf.dbname = config.db.dbname.data;
-    if (mcp.init(mconf, config.thread_num, 10)){
-        GLOG_ERR("mysql client create error handle:%p !", mcp.mysqlhandle());
+    if (mcp.init(mconf, config.thread_num)){
         return -1;
     }
     mysqlclient_t main_client;
