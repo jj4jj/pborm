@@ -75,15 +75,21 @@ _dispather(void *, const char * src, const msg_buffer_t & msg){
     return 0;
 }
 int         
-pborm_init(const char * ormaddr){
+pborm_init(const char * ormaddr, const char * name){
     g_ctx.msg_buffer.create(MAX_ORM_MSG_BUFF_SIZE);
     dcnode_config_t dconf;
 	string connaddr = "push:";
 	connaddr += ormaddr;
 	dconf.addr = dcnode_addr_t(connaddr.c_str());
-    dconf.name = "ormc-";
-	dconf.parent_heart_beat_gap = 2;
-    dcsutil::strcharsetrandom(dconf.name, 4);
+    if (name){
+        dconf.name = name;
+        dconf.durable = true;
+    }
+    else {
+        dconf.name = "pbormc-";
+        dcsutil::strcharsetrandom(dconf.name, 4);
+    }
+    dconf.parent_heart_beat_gap = 2;
     auto dc = dcnode_create(dconf);
     if (!dc){
         GLOG_ERR("create dcnode error!");

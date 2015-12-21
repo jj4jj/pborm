@@ -108,8 +108,9 @@ int main(int argc, char ** argv){
 	pborm_set_cb(receive_result, 0);
 
 	int test_case = 0;
+    int test_count = 0;
 	while (true){
-		pborm_poll(100000);//100ms
+		pborm_poll(1000);//1ms
 		/////////////////////////////////////
 		switch (test_case){
 		case 0:
@@ -117,6 +118,10 @@ int main(int argc, char ** argv){
 			sto.seq = 20;
 			sto.convto(obj);
 			ret = pborm_insert(obj, "hello,world", 11);
+            if (ret == 0){
+                --test_case;
+                ++test_count;
+            }
 			break;
 		case 1:
 			ret = 0;//pborm_delete(obj, "hello,world", 11);
@@ -145,6 +150,9 @@ int main(int argc, char ** argv){
 		if (ret == 0){
 			++test_case;
 		}
+        if (test_count >= 10000){
+            break;
+        }
 	}
     return 0;
 }
