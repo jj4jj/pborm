@@ -30,16 +30,17 @@ int main(int argc, char ** argv){
 
 
 	cmdline_opt_t	cmdline(argc, argv);
-	cmdline.parse("pborm:r::pborm server address:tcp://127.0.0.1:8888;"
-					"init:n:i:init the db test env;"
-					"user:r:u:mysql user name:gsgame;"
-					"passwd:r:p:mysql password:gsgame");
+    cmdline.parse(
+        "pborm:r::pborm server address:tcp://127.0.0.1:8888;"
+        "init:n:i:init the db test env;"
+        "user:r:u:mysql user name:gsgame;"
+        "passwd:r:p:mysql password:gsgame;"
+        "name:o:n:the pborm api client name");
 
 	//msg meta
 	DBTest		obj;
 	DBTest_ST	sto;
 	sto.construct();
-
 
 	if (cmdline.hasopt("i") || cmdline.hasopt("init")){		
 		//mysql handle
@@ -99,7 +100,7 @@ int main(int argc, char ** argv){
 		return 0;
 	}
 
-	int ret = pborm_init(cmdline.getoptstr("pborm"));
+	int ret = pborm_init(cmdline.getoptstr("pborm"), cmdline.getoptstr("name"));
 	if (ret){
 		GLOG_ERR("init pborm error!");
 		return -1;
@@ -110,7 +111,7 @@ int main(int argc, char ** argv){
 	int test_case = 0;
     int test_count = 0;
 	while (true){
-		pborm_poll(1000);//1ms
+		pborm_poll(10000);//1ms
 		/////////////////////////////////////
 		switch (test_case){
 		case 0:
