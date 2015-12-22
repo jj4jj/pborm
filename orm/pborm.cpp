@@ -245,7 +245,7 @@ main(int argc, char ** argv){
         conf.add_meta_files("db.proto");
         conf.add_meta_files("comm.proto");
         const char * default_config_file = "pborm.default.xml";
-        dcsutil::protobuf_saveto_xml(conf, default_config_file);
+        dcsutil::protobuf_msg_to_xml_file(conf, default_config_file);
         cout << "generate default config file :" << default_config_file << endl;
         return 0;
     }
@@ -257,7 +257,7 @@ main(int argc, char ** argv){
     //read config
     pborm::Config xmlconfig;
     string error;
-    int ret = protobuf_readfrom_xml(xmlconfig, confile, error);
+    int ret = protobuf_msg_from_xml_file(xmlconfig, confile, error);
     if (ret){
         cerr << "read config file error !" << endl;
         return -2;
