@@ -1,2 +1,2 @@
 # pborm
-mysql c++ orm with protobuf
+mysql C/C++ orm with protobuf

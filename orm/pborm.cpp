@@ -326,7 +326,7 @@ main(int argc, char ** argv){
     dcnode_config_t dconf;	
 	string listenaddr = "pull:";
 	listenaddr += config.listen.data;
-	dconf.addr = dcnode_addr_t(listenaddr.c_str());
+	dconf.addr = listenaddr;
 	dconf.name = "pborm";
 	dconf.max_children_heart_beat_expired = 5;
     dcnode_t * dc = dcnode_create(dconf);
