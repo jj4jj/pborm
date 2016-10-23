@@ -10,37 +10,51 @@ LIBS = [
          {
             'name':'pborm_api',
             'subdir':'api',
-            'includes':['/usr/local/include','3rd/dcpots'],
+            'includes':['/usr/local/include','..'],
             'linkpaths':[],
             'src_dirs': ['orm/proto'],
+            'genobj': {
+                'out':'${CMAKE_CURRENT_SOURCE_DIR}/../orm/proto/pborm.pb.cc',
+                'dep':'${CMAKE_CURRENT_SOURCE_DIR}/../orm/proto/pborm.proto',
+                'cmd':'cd ${CMAKE_CURRENT_SOURCE_DIR}/../orm && make'
+            }
         },
 ]
 EXES = [
         {
             'name':'pborm',
             'subdir':'orm',
-            'includes':['/usr/local/include','3rd/dcpots','3rd/hpbex'],
-            'linkpaths':['3rd/dcpots/lib'],
+            'includes':['/usr/local/include','..','../pbdcex/include','../pbdcex/include'],
+            'linkpaths':['../dcpots/lib','../pbdcex/lib'],
             'src_dirs': ['orm/proto'],
-            'extra_srcs': ['3rd/hpbex/ext_meta.cpp','3rd/hpbex/mysql_gen.cpp','3rd/hpbex/extensions_option.cpp'],
+            'extra_srcs': [''],
             'linklibs' : [
+                'dcbase',
                 'dcnode',
-                'dcutil',
+                'dcutil-mysql',
+                'pbdcex',
                 'libprotobuf.a',
                 'mysqlclient',
-            ]
+            ],
+            'genobj': {
+                'out':'${CMAKE_CURRENT_SOURCE_DIR}/../orm/proto/pborm.pb.cc',
+                'dep':'${CMAKE_CURRENT_SOURCE_DIR}/../orm/proto/pborm.proto',
+                'cmd':'cd ${CMAKE_CURRENT_SOURCE_DIR}/../orm && make'
+            }
+
         },
         {
             'name':'testapi',
             'subdir':'testapi',
-            'includes':['/usr/local/include','3rd/dcpots','3rd/hpbex'],
-            'linkpaths':['3rd/dcpots/lib'],
+            'includes':['/usr/local/include','..'],
+            'linkpaths':['../dcpots/lib'],
             'src_dirs': ['orm/proto'],
-            'extra_srcs': ['3rd/hpbex/ext_meta.cpp','3rd/hpbex/mysql_gen.cpp','3rd/hpbex/extensions_option.cpp'],
+            'extra_srcs': [''],
             'linklibs' : [
-                'pborm_api',
+                'dcbase',
                 'dcnode',
-                'dcutil',
+                'pborm_api',
+                'dcutil-mysql',
                 'libprotobuf.a',
                 'mysqlclient',
             ]

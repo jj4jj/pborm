@@ -1,13 +1,12 @@
-#include "base/logger.h"
-#include "dcnode/dcnode.h"
-#include "utility/util_mysql_pool.h"
-#include "utility/util_proto.h"
-#include "base/cmdline_opt.h"
-#include "base/msg_buffer.hpp"
-#include "mysql_gen.h"
+#include "dcpots/base/logger.h"
+#include "dcpots/dcnode/dcnode.h"
+#include "dcpots/utility/mysql/dcmysqlc_pool.h"
+#include "dcpots/utility/drs/dcproto.h"
+#include "dcpots/base/cmdline_opt.h"
+#include "dcpots/base/msg_buffer.hpp"
+#include "pbdcex/generater/mysql_gen.h"
 #include "proto/pborm.pb.h"
-#include "proto/pborm_conf.pb.h"
-#include "proto/pborm_conf.hpb.h"
+#include "proto/pborm_conf.cex.hpp"
 #include "pborm_msg.h"
 
 
@@ -15,7 +14,7 @@
 #define MINOR_VERSION   1
 #define PATCH_VERSION   1
 
-using namespace dcsutil;
+using namespace dcs;
 using namespace pborm;
 using namespace google::protobuf;
 using namespace std;
@@ -245,7 +244,7 @@ main(int argc, char ** argv){
         conf.add_meta_files("db.proto");
         conf.add_meta_files("comm.proto");
         const char * default_config_file = "pborm.default.xml";
-        dcsutil::protobuf_msg_to_xml_file(conf, default_config_file);
+        dcs::protobuf_msg_to_xml_file(conf, default_config_file);
         cout << "generate default config file :" << default_config_file << endl;
         return 0;
     }

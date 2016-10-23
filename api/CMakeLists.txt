@@ -1,21 +1,26 @@
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} CSRCS)
 
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} cur_aSRCS)
-set(cur_SRCS "${cur_aSRCS}")
-
-aux_source_directory(${PROJECT_SOURCE_DIR}/orm/proto cur_aSRCS)
-set(cur_SRCS "${cur_SRCS};${cur_aSRCS}")
+aux_source_directory(${PROJECT_SOURCE_DIR}/orm/proto CSRCS)
+list(APPEND CSRCS "${extra}")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
 ${PROJECT_SOURCE_DIR}
 /usr/include
 /usr/local/include
-${PROJECT_SOURCE_DIR}/3rd/dcpots)
+${PROJECT_SOURCE_DIR}/..)
 
-add_library(pborm_api STATIC ${cur_SRCS})
+add_custom_command(OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/../orm/proto/pborm.pb.cc
+COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}/../orm && make
+DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../orm/proto/pborm.proto
+)
+list(APPEND CSRCS ${CMAKE_CURRENT_SOURCE_DIR}/../orm/proto/pborm.pb.cc)
+
+add_library(pborm_api STATIC ${CSRCS})
 
 link_directories(
 /usr/local/lib)
 
 target_link_libraries(pborm_api
 )
+
 

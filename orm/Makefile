@@ -5,14 +5,14 @@ msg: proto/pborm.proto
 	cd proto && protoc pborm.proto --cpp_out=.
 
 conf: proto/pborm_conf.proto 
-	cp ../3rd/hpbex/extensions.proto proto/
-	cd proto && protoc -I/usr/local/include -I. pborm_conf.proto extensions.proto --cpp_out=.
-	cd proto && ../../3rd/hpbex/hpbex pborm_conf.proto pborm.Config -I. -I/usr/local/include  -o pborm_conf.hpb.h
+	#cp ../../pbdcex/include/extensions.proto proto/
+	cd proto && protoc -I/usr/local/include -I. -I../../pbdcex/include/pbdcex pborm_conf.proto --cpp_out=.
+	cd proto && ../../../pbdcex/bin/pbdcexer -I../../pbdcex/include/pbdcex -ppborm_conf.proto -mpborm.Config -I. -I/usr/local/include --cpp_out=. 
 
 test: proto/db.proto proto/comm.proto proto/extensions.proto
 	cd proto && protoc -I/usr/local/include -I. db.proto comm.proto extensions.proto --cpp_out=.
-	cd proto && ../../3rd/hpbex/hpbex db.proto test.DBTest -I. -I/usr/local/include  -o db.hpb.h
-	cd proto && ../../3rd/hpbex/hpbex comm.proto CommBase -I. -I/usr/local/include  -o comm.hpb.h
+	cd proto && ../../../pbdcex/bin/pbdcexer -pdb.proto -mtest.DBTest -I. -I/usr/local/include --cpp_out=. 
+	cd proto && ../../../pbdcex/bin/pbdcexer -pcomm.proto -mCommBase -I. -I/usr/local/include --cpp_out=. 
 
 
 

@@ -1,12 +1,12 @@
 #!/bin/bash
-if [[ ! -d 3rd/hpbex ]];then
-    cd 3rd && git clone  https://github.com/jj4jj/hpbex.git
+if [[ ! -d ../dcpots ]];then
+    cd .. && git clone https://github.com/jj4jj/dcpots.git
 fi
-if [[ ! -d 3rd/dcpots ]];then
-    cd 3rd && git clone https://github.com/jj4jj/dcpots.git
+if [[ ! -d ../pbdcex ]];then
+    cd .. && git clone https://github.com/jj4jj/pbdcex.git
 fi
 
-cd 3rd/dcpots/tools/cmaketools/ && python generate.py ../../../../cmake_conf && cd -
+python ../dcpots/tools/cmaketools/generate.py cmake_conf && cd -
 mkdir -p build
 cd build && cmake ../ && cd -
 cd build && make && cd -

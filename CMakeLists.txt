@@ -18,12 +18,14 @@ endif()
 # compile option
 option(DEBUG "Debug mode" 1)
 option(PCH "Use precompiled headers" 0)
+SET(DEBUG 1)
 
 
 SET( CMAKE_VERBOSE_MAKEFILE on)
 
 if(DEBUG)
 	set(CMAKE_BUILD_TYPE Debug)
+    add_definitions(-DDEBUG)
 	message("Build in debug-mode : Yes (default)")
 else()
 	set(CMAKE_BUILD_TYPE Release)
@@ -32,12 +34,12 @@ endif()
 
 set(CMAKE_COMM_FLAGS "")
 #debug common
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${CMAKE_COMM_FLAGS} -g3 -ggdb3 -Wall -Wfatal-errors -Wextra  -rdynamic -ldl -lm -lrt -pthread")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}  ${CMAKE_COMM_FLAGS} -g3 -ggdb3 -Wall -Wfatal-errors -Wextra -std=c++11 -rdynamic -ldl -lm -lrt -pthread")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${CMAKE_COMM_FLAGS} -g3 -ggdb3 -Wall -Wfatal-errors -Wextra  -rdynamic")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}  ${CMAKE_COMM_FLAGS} -g3 -ggdb3 -Wall -Wfatal-errors -Wextra -std=c++11 -rdynamic")
 
 # release mode
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${CMAKE_COMM_FLAGS} -O2 -g   -rdynamic -ldl -lm -lrt -pthread")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_COMM_FLAGS} -O2 -g -std=c++11  -rdynamic -ldl -lm -lrt -pthread")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${CMAKE_COMM_FLAGS} -g   -rdynamic")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_COMM_FLAGS} -g -std=c++11  -rdynamic")
 
 # output dir
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
@@ -50,4 +52,6 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
 add_subdirectory(api)
 add_subdirectory(orm)
 add_subdirectory(testapi)
+
+
 

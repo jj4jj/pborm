@@ -1,8 +1,8 @@
-#include "pborm_api.h"
-#include "dcnode/dcnode.h"
-#include "base/logger.h"
+#include "dcpots/dcnode/dcnode.h"
+#include "dcpots/base/logger.h"
 #include "orm/proto/pborm.pb.h"
 #include "orm/pborm_msg.h"
+#include "pborm_api.h"
 
 #define MAX_ORM_MSG_BUFF_SIZE   (2*1024*1024)
 static struct pborm_ctx_t {
@@ -80,14 +80,14 @@ pborm_init(const char * ormaddr, const char * name){
     dcnode_config_t dconf;
 	string connaddr = "push:";
 	connaddr += ormaddr;
-	dconf.addr = dcnode_addr_t(connaddr.c_str());
+	dconf.addr = connaddr.c_str();
     if (name){
         dconf.name = name;
         dconf.durable = true;
     }
     else {
         dconf.name = "pbormc-";
-        dcsutil::strcharsetrandom(dconf.name, 4);
+        dcs::strcharsetrandom(dconf.name, 4);
     }
     dconf.parent_heart_beat_gap = 2;
     auto dc = dcnode_create(dconf);
